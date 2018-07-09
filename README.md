@@ -20,7 +20,7 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 ## Known Bugs
 
 * The addon seems to not be loaded correctly or at all on some machines. If you have any information why this may be happening or how to resolve this, please reach out to me on [Reddit](https://www.reddit.com/user/Artenuvielle/)
-* Damage done to your pets/clones will be displayed as damage your pets do. Currently there is no way to differentiate between your pets and enemies when either of them deals damage the other.
+* The default font loaded by this addon is also used as default font for arcdps. This means that the custom font size and type set up for arcdps will be ignored.
 
 ## Authors
 
