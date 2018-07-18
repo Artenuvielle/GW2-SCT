@@ -22,6 +22,16 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 * The addon seems to not be loaded correctly or at all on some machines. If you have any information why this may be happening or how to resolve this, please reach out to me on [Reddit](https://www.reddit.com/user/Artenuvielle/)
 * The default font loaded by this addon is also used as default font for arcdps. This means that the custom font size and type set up for arcdps will be ignored.
 
+## Version History
+
+* 1.1-RC1
+	* Added options window (removed options dropdown in arcdps options window)
+	* Added editable message templates
+* 1.0
+	* Fixed that enemy damage was shown as pet/clone damage
+* 1.0-RC1
+	*  initial release
+
 ## Authors
 
 * **René Martin** - *Initial work* - [Artenuvielle](https://github.com/Artenuvielle)
