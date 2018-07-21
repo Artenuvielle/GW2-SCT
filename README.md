@@ -24,6 +24,11 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 1.1-RC2
+	* Added skill icons as template parameter
+	* Fixed %p for pet/clone messages
+	* Added option to select master font
+	* Added option to hide messages to yourself in outgoing window
 * 1.1-RC1
 	* Added options window (removed options dropdown in arcdps options window)
 	* Added editable message templates
