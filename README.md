@@ -24,6 +24,9 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 1.1-RC3
+	* Added support for ArcDPS API revision 1
+	* Added list of skill ids to filter from all messages
 * 1.1-RC2
 	* Added skill icons as template parameter
 	* Fixed %p for pet/clone messages
