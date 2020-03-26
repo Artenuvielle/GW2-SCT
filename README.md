@@ -13,6 +13,14 @@ Go to the the [release page](https://github.com/Artenuvielle/GW2-SCT/releases) a
 
 If you want to add your own fonts copy them in the "addons/sct/fonts/" subfolder of your game directory. You can configure the output in the arcdps options panel (opened by default with Alt+Shift+T).
 
+### Translations
+
+Translations can be found on this repository in the according language folder. If you have a translations for a new language or improvements for one, get in touch with me.
+
+Translations available and authors:
+* english (complete, [Artenuvielle](https://github.com/Artenuvielle))
+* chinese (mostly complete, [jiangyi0923](https://github.com/jiangyi0923))
+
 ## Contributing
 
 Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) if you have suggestions or encounter any bugs not listed below.
@@ -24,6 +32,13 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 1.2-RC1
+	* Added translation support
+	* Added support for chinese fonts
+	* Added option for filtering out skills of a given id
+	* Optimized message interpreting being run once per message before render and then on the fly only when options change (boosts FPS).
+	* Fixed the mixup of damage and healing due to arcdps update
+	* Fixed skill icons not being displayed for pets
 * 1.1-RC3
 	* Added support for ArcDPS API revision 1
 	* Added list of skill ids to filter from all messages
