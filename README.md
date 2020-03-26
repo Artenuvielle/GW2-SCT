@@ -20,6 +20,7 @@ Translations can be found on this repository in the according language folder. I
 Translations available and authors:
 * english (complete, [Artenuvielle](https://github.com/Artenuvielle))
 * chinese (mostly complete, [jiangyi0923](https://github.com/jiangyi0923))
+* french (complete, [livarkhal](https://github.com/livarkhal))
 
 ## Contributing
 
