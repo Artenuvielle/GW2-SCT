@@ -13,6 +13,8 @@ Go to the the [release page](https://github.com/Artenuvielle/GW2-SCT/releases) a
 
 If you want to add your own fonts copy them in the "addons/sct/fonts/" subfolder of your game directory. You can configure the output in the arcdps options panel (opened by default with Alt+Shift+T).
 
+If for some reason the addon is not loading for you, check that you have the newest version of the Microsoft Visual C++ Redistributables installed. Get it [here](https://support.microsoft.com/de-de/help/2977003/the-latest-supported-visual-c-downloads).
+
 ### Translations
 
 Translations can be found on this repository in the according language folder. If you have a translations for a new language or improvements for one, get in touch with me.
@@ -33,6 +35,10 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 1.2-RC2
+	* Improved loading of language files
+	* Increased maximal scrolling speed for supporting higher display resolutions.
+	* Small tweak to skill icon loading to maybe fix some issues.
 * 1.2-RC1
 	* Added translation support
 	* Added support for chinese fonts
