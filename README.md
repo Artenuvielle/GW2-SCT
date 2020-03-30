@@ -35,6 +35,8 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 1.2-RC3
+	* Changed skill icon loading code to be compatible with d912pxy
 * 1.2-RC2
 	* Improved loading of language files
 	* Increased maximal scrolling speed for supporting higher display resolutions.
