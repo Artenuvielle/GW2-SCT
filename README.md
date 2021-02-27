@@ -20,7 +20,7 @@ If for some reason the addon is not loading for you, check that you have the new
 Translations can be found on this repository in the according language folder. If you have a translations for a new language or improvements for one, get in touch with me.
 
 Translations available and authors:
-* english (complete for 1.3-RC2, [Artenuvielle](https://github.com/Artenuvielle))
+* english (complete for 1.3-RC3, [Artenuvielle](https://github.com/Artenuvielle))
 * chinese (only complete for 1.1-RC3, [jiangyi0923](https://github.com/jiangyi0923))
 * french (only complete for 1.2-RC3, [livarkhal](https://github.com/livarkhal))
 
@@ -38,6 +38,9 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 1.3-RC3
+	* fixed color pickers not working in message options tab
+	* fixed active options tab not being highlighted in menu bar
 * 1.3-RC2
 	* updated imgui library to version 1.80
 	* fixed compatibility with arcdps exports (feb.23.2021 changes)
