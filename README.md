@@ -33,11 +33,13 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 ## Known Bugs
 
 * When having problems accessing the GW2 render API no skill icons can be downloaded or it takes a very long time. Download and extract the images in icons.zip file from [here](https://github.com/Artenuvielle/GW2-SCT/issues/11#issuecomment-606794158) and into the "addons/sct/icons" subfolder of your game directory.
-* The addon seems to not be loaded correctly or at all on some machines. If you have any information why this may be happening or how to resolve this, please reach out to me on [Reddit](https://www.reddit.com/user/Artenuvielle/)
-* The default font loaded by this addon is also used as default font for arcdps. This means that the custom font size and type set up for arcdps will be ignored.
 
 ## Version History
 
+* 1.3-RC4
+	* updated multiple libraries used
+	* fixed skill filter options tab
+	* fixed game crashing if for any reason the GW2 rendering API was not reachable
 * 1.3-RC3
 	* fixed color pickers not working in message options tab
 	* fixed active options tab not being highlighted in menu bar
@@ -90,5 +92,3 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-The source code includes a copy of the [imgui library](https://github.com/ocornut/imgui) which is also licensed under the MIT license.
