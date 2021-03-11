@@ -36,6 +36,11 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 2.0-RC1
+	* added own font rendering system (problems with other addons font scaling should be fixed)
+	* still planned for 2.0: profile system (have multiple profiles of setting to quickly switch between and maybe even character bound profiles)
+	* still planned for 2.0: output messages to multiple scroll areas (this will include a complete overhaul of the current options window as message settings wont be per category but rather per catergory per scroll area)
+	* still planned for 2.0: code cleanup (I plan to make the project open source soon)
 * 1.3-RC4
 	* updated multiple libraries used
 	* fixed skill filter options tab
