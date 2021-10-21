@@ -1,0 +1,18 @@
+[submodule "submodules/simpleini"]
+	path = submodules/simpleini
+	url = https://github.com/brofield/simpleini
+[submodule "submodules/stb"]
+	path = submodules/stb
+	url = https://github.com/nothings/stb
+[submodule "submodules/json"]
+	path = submodules/json
+	url = https://github.com/nlohmann/json
+[submodule "submodules/httplib"]
+	path = submodules/httplib
+	url = https://github.com/yhirose/cpp-httplib
+[submodule "submodules/object_threadsafe"]
+	path = submodules/object_threadsafe
+	url = https://github.com/AlexeyAB/object_threadsafe
+[submodule "submodules/imgui"]
+	path = submodules/imgui
+	url = https://github.com/ocornut/imgui

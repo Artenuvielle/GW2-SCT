@@ -24,7 +24,7 @@ Translations available and authors:
 * chinese (only complete for 1.1-RC3, [jiangyi0923](https://github.com/jiangyi0923))
 * french (only complete for 1.2-RC3, [livarkhal](https://github.com/livarkhal))
 
-If you want to check which tranlation strings were changed in which version have a look [here](https://github.com/Artenuvielle/GW2-SCT/blob/master/LANGUAGE_CHANGELOG.md).
+If you want to check which translation strings were changed in which version have a look [here](https://github.com/Artenuvielle/GW2-SCT/blob/master/languages/LANGUAGE_CHANGELOG.md).
 
 ## Contributing
 
@@ -36,11 +36,15 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 2.0-RC2
+	* published source code
+	* output messages to multiple scroll areas
+	* switched options persistance format
+	* still planned for 2.0: profile system (have multiple profiles of setting to quickly switch between and maybe even character bound profiles)
+	* still planned for 2.0: replace other persistance file formats (language, skill remaps and skill icons)
 * 2.0-RC1
 	* added own font rendering system (problems with other addons font scaling should be fixed)
-	* still planned for 2.0: profile system (have multiple profiles of setting to quickly switch between and maybe even character bound profiles)
-	* still planned for 2.0: output messages to multiple scroll areas (this will include a complete overhaul of the current options window as message settings wont be per category but rather per catergory per scroll area)
-	* still planned for 2.0: code cleanup (I plan to make the project open source soon)
+	* changed memory pool for textures (this caused the game to freeze when resizing game window previously)
 * 1.3-RC4
 	* updated multiple libraries used
 	* fixed skill filter options tab
