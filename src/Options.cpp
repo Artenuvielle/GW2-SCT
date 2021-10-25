@@ -403,7 +403,7 @@ void GW2_SCT::Options::load() {
 
 void GW2_SCT::Options::setDefault() {
 	opt.revision = SCT_VERSION_STRING;
-	opt.scrollAreaOptions.push_back(std::make_shared<scroll_area_options_struct>(scroll_area_options_struct{
+	auto incomingStruct = std::make_shared<scroll_area_options_struct>(scroll_area_options_struct{
 		std::string(langStringG(LanguageKey::Default_Scroll_Area_Incoming)),
 		-249.f,
 		-25.f,
@@ -413,8 +413,15 @@ void GW2_SCT::Options::setDefault() {
 		TextCurve::LEFT,
 		ScrollAreaOutlineState::NONE,
 		{}
-	}));
-	opt.scrollAreaOptions.push_back(std::make_shared<scroll_area_options_struct>(scroll_area_options_struct{
+	});
+	for (const auto& messageTypePair : receiverInformationPerCategoryAndType.at(MessageCategory::PLAYER_IN)) {
+		incomingStruct->receivers.push_back(std::make_shared<message_receiver_options_struct>(messageTypePair.second.defaultReceiver));
+	}
+	for (const auto& messageTypePair : receiverInformationPerCategoryAndType.at(MessageCategory::PET_IN)) {
+		incomingStruct->receivers.push_back(std::make_shared<message_receiver_options_struct>(messageTypePair.second.defaultReceiver));
+	}
+	opt.scrollAreaOptions.push_back(incomingStruct);
+	auto outgoingStruct = std::make_shared<scroll_area_options_struct>(scroll_area_options_struct{
 		std::string(langStringG(LanguageKey::Default_Scroll_Area_Outgoing)),
 		217.f,
 		-25.f,
@@ -424,7 +431,14 @@ void GW2_SCT::Options::setDefault() {
 		TextCurve::RIGHT,
 		ScrollAreaOutlineState::NONE,
 		{}
-	}));
+	});
+	for (const auto& messageTypePair : receiverInformationPerCategoryAndType.at(MessageCategory::PLAYER_OUT)) {
+		outgoingStruct->receivers.push_back(std::make_shared<message_receiver_options_struct>(messageTypePair.second.defaultReceiver));
+	}
+	for (const auto& messageTypePair : receiverInformationPerCategoryAndType.at(MessageCategory::PET_OUT)) {
+		outgoingStruct->receivers.push_back(std::make_shared<message_receiver_options_struct>(messageTypePair.second.defaultReceiver));
+	}
+	opt.scrollAreaOptions.push_back(outgoingStruct);
 }
 
 bool GW2_SCT::Options::isOptionsWindowOpen() {
