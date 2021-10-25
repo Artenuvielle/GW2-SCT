@@ -343,7 +343,7 @@ void GW2_SCT::Options::load() {
 			const char* section = messageCategorySections.at(categoryIterator->first).c_str();
 			for (auto typeIterator = categoryIterator->second.begin(); typeIterator != categoryIterator->second.end(); typeIterator++) {
 				int outputArea = std::stoi(loadedIni.GetValue(section, (typeIterator->second.iniPrefix + "_Output_Manager").c_str(), std::to_string(-1).c_str()));
-				if (outputArea >= 0 && outputArea <= opt.scrollAreaOptions.size()) {
+				if (outputArea > 0 && outputArea <= opt.scrollAreaOptions.size()) {
 					message_receiver_options_struct newReceiver{
 						typeIterator->second.defaultReceiver.name,
 						categoryIterator->first,
