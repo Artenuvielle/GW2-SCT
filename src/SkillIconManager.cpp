@@ -194,7 +194,7 @@ void GW2_SCT::SkillIconManager::loadThreadCycle() {
 		if (requestedIDs->size() > 0) {
 			std::list<std::tuple<uint32_t, std::string, std::string>> loadableIconURLs;
 			std::vector<uint32_t> idListToRequestFromApi = {};
-			while (requestedIDs->size() > 0) {
+			while (requestedIDs->size() > 0 && idListToRequestFromApi.size() <= 10) {
 				int frontRequestedSkillId = requestedIDs->front();
 				requestedIDs->pop_front();
 
