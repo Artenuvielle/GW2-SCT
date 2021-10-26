@@ -229,7 +229,7 @@ void GW2_SCT::SkillIconManager::loadThreadCycle() {
 			}
 
 			std::list<std::pair<uint32_t, std::shared_ptr<std::vector<BYTE>>>> binaryLoadedIcons;
-			for (std::list<std::tuple<uint32_t, std::string, std::string>>::iterator it = loadableIconURLs.begin(); it != loadableIconURLs.end(); ++it) {
+			for (std::list<std::tuple<uint32_t, std::string, std::string>>::iterator it = loadableIconURLs.begin(); it != loadableIconURLs.end() && keepLoadThreadRunning; ++it) {
 				uint32_t curSkillId = std::get<0>(*it);
 				try {
 					std::string desc = std::get<1>(*it) + "/" + std::get<2>(*it);
@@ -259,7 +259,7 @@ void GW2_SCT::SkillIconManager::loadThreadCycle() {
 					requestedIDs->push_back(curSkillId);
 				}
 			}
-			while (binaryLoadedIcons.size() > 0) {
+			while (binaryLoadedIcons.size() > 0 && keepLoadThreadRunning) {
 				(*checkedIDs)[binaryLoadedIcons.front().first] = true;
 				loadedIcons->insert(std::pair<uint32_t, SkillIcon>(binaryLoadedIcons.front().first, SkillIcon(binaryLoadedIcons.front().second, binaryLoadedIcons.front().first)));
 				binaryLoadedIcons.pop_front();
