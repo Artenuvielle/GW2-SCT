@@ -197,6 +197,7 @@ void GW2_SCT::FontType::bakeGlyphsAtSize(std::string text, float fontSize) {
                         positionFound = true;
                         atlasPosition = lineDefinition.nextGlyphPosition;
                         lineDefinition.nextGlyphPosition.x += glyph->getWidth();
+                        break;
                     }
                 }
                 if (!positionFound) {
@@ -270,7 +271,6 @@ void GW2_SCT::FontType::drawAtSize(std::string text, float fontSize, ImVec2 pos,
             if (_allocatedAtlases[def->atlasID]->texture != nullptr) {
                 ImVec2 thisCharPos(ceil(currentPos.x + def->glyph->getLeftSideBearing()), ceil(currentPos.y + def->glyph->getOffsetTop()));
                 _allocatedAtlases[def->atlasID]->texture->draw(thisCharPos, def->getSize(), def->uvStart, def->uvEnd, color);
-                //dl->AddImage(_allocatedAtlases[def->atlasID].texture9, thisCharPos, def->offsetFrom(thisCharPos), def->uvStart, def->uvEnd, color);
                 currentPos.x += def->glyph->getAdvanceAndKerning(i + 1 >= definitions.size() ? 0 : definitions[i + 1]->glyph->getCodepoint());
             }
         }
@@ -281,7 +281,6 @@ void GW2_SCT::FontType::drawAtSize(std::string text, float fontSize, ImVec2 pos,
             if (_allocatedAtlases[def->atlasID]->texture != nullptr) {
                 ImVec2 thisCharPos(ceil(currentPos.x + realScaleFraction * def->glyph->getLeftSideBearing()), ceil(currentPos.y + realScaleFraction * def->glyph->getOffsetTop()));
                 _allocatedAtlases[def->atlasID]->texture->draw(thisCharPos, def->getSize(realScaleFraction), def->uvStart, def->uvEnd, color);
-                //dl->AddImage(_allocatedAtlases[def->atlasID].texture9, thisCharPos, def->offsetFrom(thisCharPos, realScaleFraction), def->uvStart, def->uvEnd, color);
                 currentPos.x += realScaleFraction * def->glyph->getAdvanceAndKerning(i + 1 >= definitions.size() ? 0 : definitions[i + 1]->glyph->getCodepoint());
             }
         }
@@ -414,7 +413,8 @@ void GW2_SCT::FontManager::init() {
 	std::string fontsDirectory = addonPath + "fonts\\";
 	CreateDirectory(fontsDirectory.c_str(), NULL);
 
-	defaultFont = FontManager::getDefaultFont();
+    LOG("loading default font");
+    defaultFont = FontManager::getDefaultFont();
 	fontMap = std::map<int, std::pair<std::string, FontType*>>();
 	fontMap.insert(std::pair<int, std::pair<std::string, FontType*>>(0, std::pair<std::string, FontType*>("Default", defaultFont)));
 	if (getFilesInDirectory(fontsDirectory, fontFiles)) {

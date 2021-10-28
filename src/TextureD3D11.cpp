@@ -105,7 +105,7 @@ bool GW2_SCT::MutableTextureD3D11::internalStartUpdate(ImVec2 pos, ImVec2 size, 
         LOG("Could not map staging texture.", std::to_string(res));;
         return false;
     }
-    out->data = (unsigned char*)mapped.pData;
+    out->data = (unsigned char*)mapped.pData + static_cast<int>(pos.y) * mapped.RowPitch + static_cast<int>(pos.x) * 4;
     out->rowPitch = mapped.RowPitch;
     out->bytePerPixel = 4;
     return true;

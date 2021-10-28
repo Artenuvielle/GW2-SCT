@@ -1,7 +1,7 @@
 #pragma once
 
 #define SCT_VERSION_STRING "2.0b"
-#define ARC_VERSION_REQUIRED "20211005.214913-403-x64"
+#define ARC_VERSION_REQUIRED "20211026.203453-403-x64"
 #define langStringG(KEY) GW2_SCT::Language::get(KEY)
 #define langString(SECTION, KEY) GW2_SCT::Language::get(SECTION, KEY)
 #define langStringImguiSafe(SECTION, KEY) GW2_SCT::Language::get(SECTION, KEY, true)
