@@ -7,6 +7,7 @@
   F(Scroll_Area_Option_UI,)\
   F(Receiver_Option_UI,)\
   F(Skill_Filter_Option_UI,)\
+  F(Skill_Icons_Option_UI,)\
   F(Profile_Option_UI,)\
   F(messagePlayerOutgoingPhysical,)\
   F(messagePlayerOutgoingCrit,)\
@@ -167,6 +168,11 @@
   F(Skill_Icons_Enable,)\
   F(Skill_Icons_Preload_Description,)\
   F(Skill_Icons_Preload,)\
+  F(Skill_Icons_Display_Type,)\
+  F(Skill_Icons_Display_Type_Normal,)\
+  F(Skill_Icons_Display_Type_Black_Culled,)\
+  F(Skill_Icons_Display_Type_Black_Border_Culled,)\
+  F(Skill_Icons_Display_Type_Black_Border_Touching_Culled,)\
   F(Multiple_Sources,)\
   F(Number_Of_Hits,)\
   F(Horizontal_Offset,)\
@@ -191,6 +197,7 @@
   F(Parameter_Description_r,)\
   F(Parameter_Description_i,)\
   F(Default_Value,)\
+  F(Filter_By,)\
   F(Profile_Description,)\
   F(Master_Profile,)\
   F(Character_Specific_Profile_Heading,)\

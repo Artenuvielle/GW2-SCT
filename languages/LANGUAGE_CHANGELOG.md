@@ -7,19 +7,30 @@ Here you can find all language strings added for any given version if you want t
 * 2.0-RC3
 	* Added:
 		* `[Option_UI] -> Menu_Bar_Profiles`
-		* `[Menu_Bar_Profiles] -> Delete_Confirmation_Title`
-		* `[Menu_Bar_Profiles] -> Delete_Confirmation_Content`
-		* `[Menu_Bar_Profiles] -> Delete_Confirmation_Confirmation`
-		* `[Menu_Bar_Profiles] -> Delete_Confirmation_Cancel`
-		* `[Menu_Bar_Profiles] -> Profile_Description`
-		* `[Menu_Bar_Profiles] -> Master_Profile`
-		* `[Menu_Bar_Profiles] -> Character_Specific_Profile_Heading`
-		* `[Menu_Bar_Profiles] -> Character_Specific_Profile_Enabled`
-		* `[Menu_Bar_Profiles] -> Current_Profile_Heading`
-		* `[Menu_Bar_Profiles] -> Current_Profile_Name`
-		* `[Menu_Bar_Profiles] -> Create_Profile_Copy`
-		* `[Menu_Bar_Profiles] -> Delete_Profile`
-		* `[Menu_Bar_Profiles] -> Profile_Copy_Suffix`
+		* `[Profile_Option_UI] -> Delete_Confirmation_Title`
+		* `[Profile_Option_UI] -> Delete_Confirmation_Content`
+		* `[Profile_Option_UI] -> Delete_Confirmation_Confirmation`
+		* `[Profile_Option_UI] -> Delete_Confirmation_Cancel`
+		* `[Profile_Option_UI] -> Profile_Description`
+		* `[Profile_Option_UI] -> Master_Profile`
+		* `[Profile_Option_UI] -> Character_Specific_Profile_Heading`
+		* `[Profile_Option_UI] -> Character_Specific_Profile_Enabled`
+		* `[Profile_Option_UI] -> Current_Profile_Heading`
+		* `[Profile_Option_UI] -> Current_Profile_Name`
+		* `[Profile_Option_UI] -> Create_Profile_Copy`
+		* `[Profile_Option_UI] -> Delete_Profile`
+		* `[Profile_Option_UI] -> Profile_Copy_Suffix`
+		* `[Skill_Filter_Option_UI] -> Filter_By`
+		* `[Skill_Icons_Option_UI] -> Skill_Icons_Display_Type`
+		* `[Skill_Icons_Option_UI] -> Skill_Icons_Display_Type_Normal`
+		* `[Skill_Icons_Option_UI] -> Skill_Icons_Display_Type_Black_Culled`
+		* `[Skill_Icons_Option_UI] -> Skill_Icons_Display_Type_Black_Border_Culled`
+		* `[Skill_Icons_Option_UI] -> Skill_Icons_Display_Type_Black_Border_Touching_Culled`
+	* Moved:
+		* `[Option_UI] -> Skill_Icons_Warning` to `[Skill_Icons_Option_UI] -> Skill_Icons_Warning`
+		* `[Option_UI] -> Skill_Icons_Enable` to `[Skill_Icons_Option_UI] -> Skill_Icons_Enable`
+		* `[Option_UI] -> Skill_Icons_Preload_Description` to `[Skill_Icons_Option_UI] -> Skill_Icons_Preload_Description`
+		* `[Option_UI] -> Skill_Icons_Preload` to `[Skill_Icons_Option_UI] -> Skill_Icons_Preload`
 	* Removed:
 		* `[Option_UI] -> Menu_Bar_Messages`
 * 2.0-RC2
@@ -67,7 +78,6 @@ Here you can find all language strings added for any given version if you want t
 	* Removed:
 		* `[Option_UI] -> Menu_Bar_Filtered_Skill_IDs`
 		* `[Option_UI] -> Scroll_Areas_None_Exist`
-		* `[Option_UI] -> Scroll_Areas_New`
 		* for all message category and type sections: `[...] -> title`
 * 1.3-RC1
 	* Added:

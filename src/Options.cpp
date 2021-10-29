@@ -142,23 +142,30 @@ namespace GW2_SCT {
 	};
 
 	const std::map<MessageType, std::string> typeNames = {
-			{ MessageType::PHYSICAL, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Physical)) },
-			{ MessageType::CRIT, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Crit)) },
-			{ MessageType::BLEEDING, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Bleeding)) },
-			{ MessageType::BURNING, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Burning)) },
-			{ MessageType::POISON, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Poison)) },
-			{ MessageType::CONFUSION, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Confusion)) },
-			{ MessageType::RETALIATION, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Retaliation)) },
-			{ MessageType::TORMENT, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Torment)) },
-			{ MessageType::DOT, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Dot)) },
-			{ MessageType::HEAL, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Heal)) },
-			{ MessageType::HOT, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Hot)) },
-			{ MessageType::SHIELD_RECEIVE, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Shield_Receive)) },
-			{ MessageType::SHIELD_REMOVE, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Shield_Remove)) },
-			{ MessageType::BLOCK, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Block)) },
-			{ MessageType::EVADE, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Evade)) },
-			{ MessageType::INVULNERABLE, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Invulnerable)) },
-			{ MessageType::MISS, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Miss)) }
+		{ MessageType::PHYSICAL, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Physical)) },
+		{ MessageType::CRIT, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Crit)) },
+		{ MessageType::BLEEDING, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Bleeding)) },
+		{ MessageType::BURNING, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Burning)) },
+		{ MessageType::POISON, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Poison)) },
+		{ MessageType::CONFUSION, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Confusion)) },
+		{ MessageType::RETALIATION, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Retaliation)) },
+		{ MessageType::TORMENT, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Torment)) },
+		{ MessageType::DOT, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Dot)) },
+		{ MessageType::HEAL, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Heal)) },
+		{ MessageType::HOT, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Hot)) },
+		{ MessageType::SHIELD_RECEIVE, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Shield_Receive)) },
+		{ MessageType::SHIELD_REMOVE, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Shield_Remove)) },
+		{ MessageType::BLOCK, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Block)) },
+		{ MessageType::EVADE, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Evade)) },
+		{ MessageType::INVULNERABLE, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Invulnerable)) },
+		{ MessageType::MISS, std::string(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Type_Miss)) }
+	};
+
+	const std::map<SkillIconDisplayType, std::string> skillIconsDisplayTypeNames = {
+		{ SkillIconDisplayType::NORMAL, std::string(langString(GW2_SCT::LanguageCategory::Skill_Icons_Option_UI, GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Normal)) },
+		{ SkillIconDisplayType::BLACK_CULLED, std::string(langString(GW2_SCT::LanguageCategory::Skill_Icons_Option_UI, GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Black_Culled)) },
+		{ SkillIconDisplayType::BORDER_BLACK_CULLED, std::string(langString(GW2_SCT::LanguageCategory::Skill_Icons_Option_UI, GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Black_Border_Culled)) },
+		{ SkillIconDisplayType::BORDER_TOUCHING_BLACK_CULLED, std::string(langString(GW2_SCT::LanguageCategory::Skill_Icons_Option_UI, GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Black_Border_Touching_Culled)) }
 	};
 }
 
@@ -414,6 +421,7 @@ void GW2_SCT::Options::load() {
 			}
 
 			if (rev == "2.0b") {
+				j["skillIconsDisplayType"] = SkillIconDisplayType::NORMAL;
 				j = {
 					{ "revision", rev },
 					{ "globalProfile", defaultProfileName },
@@ -680,7 +688,7 @@ void GW2_SCT::Options::paintProfessionColors() {
 }
 
 void GW2_SCT::Options::paintSkillFilters() {
-	ImGui::Text("Filter by");
+	ImGui::Text(langString(LanguageCategory::Skill_Filter_Option_UI, LanguageKey::Filter_By));
 	uint32_t i = 0;
 	for (auto it = profile->skillFilters.begin(); it != profile->skillFilters.end(); ++it) {
 		int retFlags = ImGui::FilterOptionLine(i, &(*it));
@@ -713,11 +721,25 @@ void GW2_SCT::Options::paintSkillFilters() {
 }
 
 void GW2_SCT::Options::paintSkillIcons() {
-	std::string language_warning(langString(LanguageCategory::Option_UI, LanguageKey::Skill_Icons_Warning));
+	std::string language_warning(langString(LanguageCategory::Skill_Icons_Option_UI, LanguageKey::Skill_Icons_Warning));
 	ImGui::TextWrapped((language_warning + " '" + getSCTPath() + "icons\\" + "'").c_str());
-	ImGui::Checkbox(langString(LanguageCategory::Option_UI, LanguageKey::Skill_Icons_Enable), &profile->skillIconsEnabled);
-	ImGui::TextWrapped(langString(LanguageCategory::Option_UI, LanguageKey::Skill_Icons_Preload_Description));
-	ImGui::Checkbox(langString(LanguageCategory::Option_UI, LanguageKey::Skill_Icons_Preload), &profile->preloadAllSkillIcons);
+	ImGui::Checkbox(langString(LanguageCategory::Skill_Icons_Option_UI, LanguageKey::Skill_Icons_Enable), &profile->skillIconsEnabled);
+	ImGui::TextWrapped(langString(LanguageCategory::Skill_Icons_Option_UI, LanguageKey::Skill_Icons_Preload_Description));
+	ImGui::Checkbox(langString(LanguageCategory::Skill_Icons_Option_UI, LanguageKey::Skill_Icons_Preload), &profile->preloadAllSkillIcons);
+	ImGui::Text("");
+	if (ImGui::BeginCombo(
+		ImGui::BuildVisibleLabel(langString(LanguageCategory::Skill_Icons_Option_UI, LanguageKey::Skill_Icons_Display_Type), "skill-icons-display-combo").c_str(),
+		skillIconsDisplayTypeNames.at(profile->skillIconsDisplayType).c_str())
+	) {
+		int i = 0;
+		for (auto& skillIconDisplayTypeAndName : skillIconsDisplayTypeNames) {
+			if (ImGui::Selectable(ImGui::BuildLabel(skillIconDisplayTypeAndName.second, "skill-icons-display-selectable", i).c_str())) {
+				profile->skillIconsDisplayType = skillIconDisplayTypeAndName.first;
+			}
+			i++;
+		}
+		ImGui::EndCombo();
+	}
 }
 
 void GW2_SCT::Options::paintProfiles() {

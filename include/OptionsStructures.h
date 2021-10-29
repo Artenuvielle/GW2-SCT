@@ -30,6 +30,15 @@ namespace GW2_SCT {
 	extern int filterTypeToInt(FilterType type);
 	extern FilterType intToFilterType(int i);
 
+	enum class SkillIconDisplayType {
+		NORMAL = 0,
+		BLACK_CULLED,
+		BORDER_BLACK_CULLED,
+		BORDER_TOUCHING_BLACK_CULLED
+	};
+	extern int skillIconDisplayTypeToInt(SkillIconDisplayType type);
+	extern SkillIconDisplayType intSkillIconDisplayType(int i);
+
 	class profile_options_struct;
 	class scroll_area_options_struct;
 	class message_receiver_options_struct;
@@ -71,6 +80,7 @@ namespace GW2_SCT {
 		std::vector<filter_options_struct> skillFilters = {};
 		ObservableValue<bool> skillIconsEnabled = false;
 		ObservableValue<bool> preloadAllSkillIcons = false;
+		SkillIconDisplayType skillIconsDisplayType = SkillIconDisplayType::NORMAL;
 	};
 	void to_json(nlohmann::json& j, const profile_options_struct& p);
 	void from_json(const nlohmann::json& j, profile_options_struct& p);

@@ -1,5 +1,6 @@
 #pragma once
 #include "Texture.h"
+#include "OptionsStructures.h"
 #include <memory>
 #include <queue>
 #include <unordered_map>
@@ -16,11 +17,11 @@ namespace GW2_SCT {
 		SkillIcon(std::shared_ptr<std::vector<BYTE>> fileData, uint32_t skillID);
 		~SkillIcon();
 	private:
-		void loadTexture();
-		ImmutableTexture* texture = nullptr;
+		void loadTexture(SkillIconDisplayType displayType);
+		std::unordered_map<SkillIconDisplayType, ImmutableTexture*> textures;
 		std::shared_ptr<std::vector<BYTE>> fileData;
 		uint32_t skillID;
-		bool textureCreated = false;
+		std::unordered_map<SkillIconDisplayType, bool> texturesCreated = {};
 	};
 
 	class SkillIconManager {

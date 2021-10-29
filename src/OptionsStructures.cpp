@@ -48,6 +48,15 @@ inline GW2_SCT::FilterType GW2_SCT::intToFilterType(int i) {
 	return (GW2_SCT::FilterType)i;
 }
 
+inline int GW2_SCT::skillIconDisplayTypeToInt(GW2_SCT::SkillIconDisplayType type) {
+	return (int)type;
+}
+
+inline GW2_SCT::SkillIconDisplayType GW2_SCT::intSkillIconDisplayType(int i) {
+	if (i < 0 || i > 3) return (GW2_SCT::SkillIconDisplayType)0;
+	return (GW2_SCT::SkillIconDisplayType)i;
+}
+
 void GW2_SCT::to_json(nlohmann::json& j, const options_struct& p) {
 	j = nlohmann::json{
 		{"revision", p.revision},
@@ -89,7 +98,8 @@ void GW2_SCT::to_json(nlohmann::json& j, const profile_options_struct& p) {
 		{"scrollAreas", p.scrollAreaOptions},
 		{"filteredIDs", p.skillFilters},
 		{"skillIconsEnabled", p.skillIconsEnabled},
-		{"skillIconsPreload", p.preloadAllSkillIcons}
+		{"skillIconsPreload", p.preloadAllSkillIcons},
+		{"skillIconsDisplayType", p.skillIconsDisplayType}
 	};
 }
 
@@ -118,6 +128,7 @@ void GW2_SCT::from_json(const nlohmann::json& j, profile_options_struct& p) {
 	j.at("filteredIDs").get_to(p.skillFilters);
 	j.at("skillIconsEnabled").get_to(p.skillIconsEnabled);
 	j.at("skillIconsPreload").get_to(p.preloadAllSkillIcons);
+	j.at("skillIconsDisplayType").get_to(p.skillIconsDisplayType);
 }
 
 void GW2_SCT::to_json(nlohmann::json& j, const scroll_area_options_struct& p) {

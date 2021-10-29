@@ -51,4 +51,5 @@ namespace GW2_SCT {
 	extern const std::map<MessageCategory, const std::map<MessageType, receiver_information>> receiverInformationPerCategoryAndType;
 	extern const std::map<MessageCategory, std::string> categoryNames;
 	extern const std::map<MessageType, std::string> typeNames;
+	extern const std::map<SkillIconDisplayType, std::string> skillIconsDisplayTypeNames;
 }

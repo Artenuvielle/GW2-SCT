@@ -96,10 +96,6 @@ std::map<GW2_SCT::LanguageCategory, std::map<GW2_SCT::LanguageKey, const char*>>
 		{ GW2_SCT::LanguageKey::Profession_Colors_Necromancer, "Necromancer" },
 		{ GW2_SCT::LanguageKey::Profession_Colors_Revenant, "Revenant" },
 		{ GW2_SCT::LanguageKey::Profession_Colors_Undetectable, "Undetectable profession" },
-		{ GW2_SCT::LanguageKey::Skill_Icons_Warning, "Warning: Using skill icons will establish an additional connection to the GW2 rendering API. All downloaded icons will be saved in" },
-		{ GW2_SCT::LanguageKey::Skill_Icons_Enable, "Enable skill icons" },
-		{ GW2_SCT::LanguageKey::Skill_Icons_Preload_Description, "Preloading skill icons will download every possible skill icon from the GW2 rendering API. This will require ~25MB of free memory space available. If not enabled, icons will be only downloaded as needed." },
-		{ GW2_SCT::LanguageKey::Skill_Icons_Preload, "Preload all skill icons" },
 	} },
 	{ GW2_SCT::LanguageCategory::Message, {
 		{ GW2_SCT::LanguageKey::Multiple_Sources, "Multiple" },
@@ -129,10 +125,22 @@ std::map<GW2_SCT::LanguageCategory, std::map<GW2_SCT::LanguageKey, const char*>>
 		{ GW2_SCT::LanguageKey::Available_Parameters, "Available template parameters" },
 	} },
 	{ GW2_SCT::LanguageCategory::Skill_Filter_Option_UI, {
+		{ GW2_SCT::LanguageKey::Filter_By, "Filter by" },
 		{ GW2_SCT::LanguageKey::Delete_Confirmation_Title, "Delete?" },
 		{ GW2_SCT::LanguageKey::Delete_Confirmation_Content, "Are you sure you want to delete this skill id filter?" },
 		{ GW2_SCT::LanguageKey::Delete_Confirmation_Confirmation, "OK" },
 		{ GW2_SCT::LanguageKey::Delete_Confirmation_Cancel, "Cancel" },
+	} },
+	{ GW2_SCT::LanguageCategory::Skill_Icons_Option_UI, {
+		{ GW2_SCT::LanguageKey::Skill_Icons_Warning, "Warning: Using skill icons will establish an additional connection to the GW2 rendering API. All downloaded icons will be saved in" },
+		{ GW2_SCT::LanguageKey::Skill_Icons_Enable, "Enable skill icons" },
+		{ GW2_SCT::LanguageKey::Skill_Icons_Preload_Description, "Preloading skill icons will download every possible skill icon from the GW2 rendering API. This will require ~25MB of free memory space available. If not enabled, icons will be only downloaded as needed." },
+		{ GW2_SCT::LanguageKey::Skill_Icons_Preload, "Preload all skill icons" },
+		{ GW2_SCT::LanguageKey::Skill_Icons_Display_Type, "Postprocessing" },
+		{ GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Normal, "None" },
+		{ GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Black_Culled, "Cull dark pixels" },
+		{ GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Black_Border_Culled, "Cull border squares of dark pixels" },
+		{ GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Black_Border_Touching_Culled, "Cull dark pixels touching border or other transparent pixels" },
 	} },
 	{ GW2_SCT::LanguageCategory::Profile_Option_UI, {
 		{ GW2_SCT::LanguageKey::Profile_Description, "Profiles store all your other SCT options and can be quickly changed in this tab. You can either define which profile is used for the in game character you are currently playing or otherwise the profile selectected as master profile will be loaded." },

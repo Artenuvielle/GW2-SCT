@@ -300,16 +300,17 @@ GW2_SCT::SkillIcon* GW2_SCT::SkillIconManager::getIcon(uint32_t skillID) {
 }
 
 ImVec2 GW2_SCT::SkillIcon::draw(ImVec2 pos, ImVec2 size, ImU32 color) {
-	if (!textureCreated) {
-		loadTexture();
+	SkillIconDisplayType requestedDisplayType = Options::get()->skillIconsDisplayType;
+	if (!texturesCreated[requestedDisplayType]) {
+		loadTexture(requestedDisplayType);
 	}
-	if (texture == nullptr) {
+	if (textures[requestedDisplayType] == nullptr) {
 		return ImVec2(0,0);
 	}
 
 	ImVec2 end(pos.x + size.x, pos.y + size.y);
-	if (texture != nullptr) {
-		texture->draw(pos, size, color);
+	if (textures[requestedDisplayType] != nullptr) {
+		textures[requestedDisplayType]->draw(pos, size, color);
 	} else {
 		return ImVec2(0, 0);
 	}
@@ -317,10 +318,11 @@ ImVec2 GW2_SCT::SkillIcon::draw(ImVec2 pos, ImVec2 size, ImU32 color) {
 }
 
 GW2_SCT::SkillIcon::SkillIcon(std::shared_ptr<std::vector<BYTE>> fileData, uint32_t skillID)
-	: fileData(fileData), skillID(skillID), texture(nullptr) {}
+	: fileData(fileData), skillID(skillID) {}
 
 GW2_SCT::SkillIcon::~SkillIcon() {
-	if (texture != nullptr) ImmutableTexture::Release(texture);
+	for (auto& texture: textures)
+		if (texture.second != nullptr)ImmutableTexture::Release(texture.second);
 }
 
 struct HexCharStruct {
@@ -367,26 +369,92 @@ void logImageData(unsigned char* data, size_t size) {
 	}
 }
 
-void convertRGBAToARGB(unsigned char* image_data, int image_width, int image_height) {
+struct ImageDataHelper {
+	unsigned char* data;
+	int row_size;
+private:
+	struct ImageDataHelperRow {
+		unsigned char* row_start;
+		unsigned char* operator[](int x) {
+			return { row_start + x * 4 };
+		}
+		operator unsigned char* () { return row_start; };
+	};
+public:
+	ImageDataHelperRow operator[](int y) {
+		return { data + y * 4 * row_size };
+	}
+};
+
+void setScaledTransparency(unsigned char* cur) {
+	int r = std::max(0, cur[0] - 10);
+	int g = std::max(0, cur[1] - 10);
+	int b = std::max(0, cur[2] - 10);
+	cur[3] = std::min(0xff, 0xff * ((r * r + g * g + b * b) / 300));
+}
+
+bool pixelIsBlack(unsigned char* cur) {
+	return cur[0] <= 20 && cur[1] <= 20 && cur[2] <= 20;
+}
+
+bool borderNIsBlack(ImageDataHelper data, int n, int image_width, int image_height) {
+	for (int x = n; x < image_width - n; x++) if (!pixelIsBlack(data[n][x])) return false;
+	for (int x = n; x < image_width - n; x++) if (!pixelIsBlack(data[image_height - n - 1][x])) return false;
+	for (int y = n + 1; y < image_height - n - 1; y++) if (!pixelIsBlack(data[y][n])) return false;
+	for (int y = n + 1; y < image_height - n - 1; y++) if (!pixelIsBlack(data[y][image_width - n - 1])) return false;
+	return true;
+}
+
+void convertRGBAToARGBAndCull(unsigned char* image_data, int image_width, int image_height, GW2_SCT::SkillIconDisplayType displayType) {
 	unsigned char* cur = image_data;
 	for (int y = 0; y < image_height; y++) {
 		for (int x = 0; x < image_width; x++) {
 			char red = cur[0];
 			cur[0] = cur[2];
 			cur[2] = red;
-			// TODO: possibile feature
-			/*
-			if (cur[0] == 0x00 && cur[1] == 0x00 && cur[2] == 0x00) {
-				cur[3] = 0x00;
+			if (displayType == GW2_SCT::SkillIconDisplayType::BLACK_CULLED) {
+				if (pixelIsBlack(cur)) {
+					setScaledTransparency(cur);
+				}
 			}
-			*/
 			cur += 4;
+		}
+	}
+	if (displayType == GW2_SCT::SkillIconDisplayType::BORDER_TOUCHING_BLACK_CULLED) {
+		ImageDataHelper image{ image_data, image_width };
+		std::queue<std::pair<int, int>> pixelsToResolve;
+		for (int x = 0; x < image_width; x++) pixelsToResolve.push(std::pair<int, int>(x, 0));
+		for (int x = 0; x < image_width; x++) pixelsToResolve.push(std::pair<int, int>(x, image_height - 1));
+		for (int y = 1; y < image_height - 1; y++) pixelsToResolve.push(std::pair<int, int>(0, y));
+		for (int y = 1; y < image_height - 1; y++) pixelsToResolve.push(std::pair<int, int>(image_width - 1, y));
+		while (pixelsToResolve.size() > 0) {
+			auto pixelIndex = pixelsToResolve.front();
+			pixelsToResolve.pop();
+			cur = image[pixelIndex.second][pixelIndex.first];
+			if (cur[3] == 0xff && pixelIsBlack(cur)) {
+				setScaledTransparency(cur);
+				if (pixelIndex.first - 1 > 0) pixelsToResolve.push(std::pair<int, int>(pixelIndex.first - 1, pixelIndex.second));
+				if (pixelIndex.second - 1 > 0) pixelsToResolve.push(std::pair<int, int>(pixelIndex.first, pixelIndex.second - 1));
+				if (pixelIndex.first + 1 < image_width) pixelsToResolve.push(std::pair<int, int>(pixelIndex.first + 1, pixelIndex.second));
+				if (pixelIndex.first + 1 < image_height) pixelsToResolve.push(std::pair<int, int>(pixelIndex.first, pixelIndex.second + 1));
+			}
+		}
+	}
+	if (displayType == GW2_SCT::SkillIconDisplayType::BORDER_BLACK_CULLED) {
+		ImageDataHelper image{ image_data, image_width };
+		int n = 0;
+		while (borderNIsBlack(image, n, image_width, image_height)) {
+			for (int x = n; x < image_width - n; x++) setScaledTransparency(image[n][x]);
+			for (int x = n; x < image_width - n; x++) setScaledTransparency(image[image_height - n - 1][x]);
+			for (int y = n + 1; y < image_height - n - 1; y++) setScaledTransparency(image[y][n]);
+			for (int y = n + 1; y < image_height - n - 1; y++) setScaledTransparency(image[y][image_width - n - 1]);
+			n++;
 		}
 	}
 }
 
-void GW2_SCT::SkillIcon::loadTexture() {
-	textureCreated = true;
+void GW2_SCT::SkillIcon::loadTexture(GW2_SCT::SkillIconDisplayType displayType) {
+	texturesCreated[displayType] = true;
 
 	if (fileData->size() < 100) {
 		LOG("Icon: ", std::to_string(skillID));
@@ -400,18 +468,18 @@ void GW2_SCT::SkillIcon::loadTexture() {
 	int nBpp = 4; // Bytes per pixel
 	unsigned char* image_data = stbi_load_from_memory(fileData->data(), (int)fileData->size(), &image_width, &image_height, NULL, nBpp);
 	if (image_data == NULL) {
-		texture = nullptr;
+		textures[displayType] = nullptr;
 		LOG("stbi_load_from_memory image_data == NULL");
 		logImageData(fileData);
 		return;
 	}
 
-	convertRGBAToARGB(image_data, image_width, image_height);
+	convertRGBAToARGBAndCull(image_data, image_width, image_height, displayType);
 	
 	// Upload texture to graphics system
-	if (texture != nullptr) ImmutableTexture::Release(texture);
-	texture = ImmutableTexture::Create(image_width, image_height, image_data);
-	if (texture == nullptr) {
+	if (textures[displayType] != nullptr) ImmutableTexture::Release(textures[displayType]);
+	textures[displayType] = ImmutableTexture::Create(image_width, image_height, image_data);
+	if (textures[displayType] == nullptr) {
 		LOG("Could not upload skill icon data to graphics system.");
 	}
 
