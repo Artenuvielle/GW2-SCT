@@ -88,7 +88,7 @@ bool isArcdpsOutdated = false;
 
 arcdps_exports* mod_init() {
 #ifdef _DEBUG
-	AllocConsole();
+	//AllocConsole();
 	debug_console_hnd = GetStdHandle(STD_OUTPUT_HANDLE);
 #endif
 	std::string arcversString(arcvers);

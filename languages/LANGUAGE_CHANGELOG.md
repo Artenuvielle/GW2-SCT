@@ -4,6 +4,24 @@ Here you can find all language strings added for any given version if you want t
 
 ## Version History
 
+* 2.0-RC3
+	* Added:
+		* `[Option_UI] -> Menu_Bar_Profiles`
+		* `[Menu_Bar_Profiles] -> Delete_Confirmation_Title`
+		* `[Menu_Bar_Profiles] -> Delete_Confirmation_Content`
+		* `[Menu_Bar_Profiles] -> Delete_Confirmation_Confirmation`
+		* `[Menu_Bar_Profiles] -> Delete_Confirmation_Cancel`
+		* `[Menu_Bar_Profiles] -> Profile_Description`
+		* `[Menu_Bar_Profiles] -> Master_Profile`
+		* `[Menu_Bar_Profiles] -> Character_Specific_Profile_Heading`
+		* `[Menu_Bar_Profiles] -> Character_Specific_Profile_Enabled`
+		* `[Menu_Bar_Profiles] -> Current_Profile_Heading`
+		* `[Menu_Bar_Profiles] -> Current_Profile_Name`
+		* `[Menu_Bar_Profiles] -> Create_Profile_Copy`
+		* `[Menu_Bar_Profiles] -> Delete_Profile`
+		* `[Menu_Bar_Profiles] -> Profile_Copy_Suffix`
+	* Removed:
+		* `[Option_UI] -> Menu_Bar_Messages`
 * 2.0-RC2
 	* Added:
 		* `[General] -> Font_Size_Type`

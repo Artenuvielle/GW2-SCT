@@ -15,7 +15,7 @@ link_directories(${OPENSSL_LIBRARY_DIR})
 FILE(GLOB HEADERS include/*.h include/*.hpp)
 FILE(GLOB SOURCES src/*.cpp src/*.c)
 
-FILE(GLOB IMGUI_SOURCES submodules/imgui/*.cpp submodules/imgui/*.c)
+FILE(GLOB IMGUI_SOURCES submodules/imgui/*.cpp submodules/imgui/misc/cpp/*.cpp submodules/imgui/*.c)
 FILE(GLOB SIMPLEINI_SOURCES submodules/simpleini/*.cpp submodules/simpleini/*.c)
 
 list(APPEND SOURCES ${IMGUI_SOURCES} ${CURLITE_SOURCES} ${SIMPLEINI_SOURCES})
@@ -27,6 +27,7 @@ SET_SOURCE_FILES_PROPERTIES( ${SOURCES} PROPERTIES LANGUAGE CXX )
 target_include_directories(${TARGET_NAME} PUBLIC
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/submodules/imgui>"
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/submodules/imgui/misc/cpp>"
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/submodules/httplib>"
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/submodules/json/single_include/nlohmann>"
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/submodules/simpleini>"

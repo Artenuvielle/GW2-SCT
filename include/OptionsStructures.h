@@ -30,6 +30,7 @@ namespace GW2_SCT {
 	extern int filterTypeToInt(FilterType type);
 	extern FilterType intToFilterType(int i);
 
+	class profile_options_struct;
 	class scroll_area_options_struct;
 	class message_receiver_options_struct;
 	class filter_options_struct;
@@ -37,6 +38,15 @@ namespace GW2_SCT {
 	class options_struct {
 	public:
 		std::string revision = "1.0";
+		std::string globalProfile = "default";
+		shared_ptr_map_with_creation<std::string, profile_options_struct> profiles;
+		std::map<std::string, std::string> characterProfileMap;
+	};
+	void to_json(nlohmann::json& j, const options_struct& p);
+	void from_json(const nlohmann::json& j, options_struct& p);
+
+	class profile_options_struct {
+	public:
 		bool sctEnabled = true;
 		float scrollSpeed = 90.f;
 		bool dropShadow = true;
@@ -62,8 +72,8 @@ namespace GW2_SCT {
 		ObservableValue<bool> skillIconsEnabled = false;
 		ObservableValue<bool> preloadAllSkillIcons = false;
 	};
-	void to_json(nlohmann::json& j, const options_struct& p);
-	void from_json(const nlohmann::json& j, options_struct& p);
+	void to_json(nlohmann::json& j, const profile_options_struct& p);
+	void from_json(const nlohmann::json& j, profile_options_struct& p);
 
 	enum class ScrollAreaOutlineState {
 		NONE = 0,

@@ -43,5 +43,8 @@ namespace GW2_SCT {
 		uintptr_t targetAgentId = -1;
 		std::map<uint32_t, uint32_t> skillRemaps;
 		std::vector<std::shared_ptr<GW2_SCT::ScrollArea>> scrollAreas;
+
+		long currentScrollAreaEraseCallbackId = -1;
+		long currentScrollAreaPushBackCallbackId = -1;
 	};
 }

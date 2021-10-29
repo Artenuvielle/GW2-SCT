@@ -39,5 +39,8 @@ namespace GW2_SCT {
 		static sf::contfree_safe_ptr<std::unordered_map<uint32_t, SkillIcon>> loadedIcons;
 		static std::thread loadThread;
 		static std::atomic<bool> keepLoadThreadRunning;
+
+		static long skillIconsEnabledCallbackId;
+		static long preloadAllSkillIconsId;
 	};
 }

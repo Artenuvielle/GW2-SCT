@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include <vector>
 #include <functional>
 #include "json.hpp"
@@ -14,8 +15,17 @@ public:
     ~ObservableVector()
     {}
 
-    void addOnEraseCallback(std::function<void(int)> callback) {
-        onEraseCallbacks.push_back(callback);
+    long addOnEraseCallback(std::function<void(int)> callback) {
+        onEraseCallbacks.insert(std::pair<long, std::function<void(int)>>(nextEraseCallbacksIndex, callback));
+        nextEraseCallbacksIndex++;
+        return nextEraseCallbacksIndex - 1;
+    }
+
+    void removeOnEraseCallback(long id) {
+        auto found = onEraseCallbacks.find(id);
+        if (found != onEraseCallbacks.end()) {
+            onEraseCallbacks.erase(found);
+        }
     }
 
     constexpr std::vector<T>::iterator erase(std::vector<T>::const_iterator pos) {
@@ -23,7 +33,7 @@ public:
         int i = 0;
         while (it != std::vector<T>::end()) {
             if (it == pos) {
-                for (auto& callback : onEraseCallbacks) callback(i);
+                for (auto& callback : onEraseCallbacks) callback.second(i);
                 break;
             }
             it++;
@@ -32,19 +42,32 @@ public:
         return std::vector<T>::erase(pos);
     }
 
-    void addOnPushBackCallback(std::function<void(const T&)> callback) {
-        onPushBackCallbacks.push_back(callback);
+    long addOnPushBackCallback(std::function<void(const T&)> callback) {
+        onPushBackCallbacks.insert(std::pair<long, std::function<void(const T&)>>(nextPushBackCallbacksIndex, callback));
+        nextPushBackCallbacksIndex++;
+        return nextPushBackCallbacksIndex - 1;
+    }
+
+    void removeOnPushBackCallback(long id) {
+        auto found = onPushBackCallbacks.find(id);
+        if (found != onPushBackCallbacks.end()) {
+            onPushBackCallbacks.erase(found);
+        }
     }
 
     constexpr void push_back(const T& val) {
         std::vector<T>::push_back(val);
         size_t s = std::vector<T>::size();
         if (s > 0)
-            for (auto& callback : onPushBackCallbacks) callback(val);
+            for (auto& callback : onPushBackCallbacks) callback.second(val);
     }
 private:
-    std::vector<std::function<void(int)>> onEraseCallbacks;
-    std::vector<std::function<void(const T&)>> onPushBackCallbacks;
+    //std::vector<std::function<void(int)>> onEraseCallbacks;
+    std::map<long, std::function<void(int)>> onEraseCallbacks = {};
+    long nextEraseCallbacksIndex = 0;
+    //std::vector<std::function<void(const T&)>> onPushBackCallbacks;
+    std::map<long, std::function<void(const T&)>> onPushBackCallbacks = {};
+    long nextPushBackCallbacksIndex = 0;
 };
 
 template <class T>
@@ -72,6 +95,7 @@ public:
     }
 
     operator T() const { return value; };
+    T& operator->() { return value; }
 
     friend std::ostream& operator<< (std::ostream& stream, const ObservableValue<T>& ov) {
         return stream << ov.value;
@@ -118,3 +142,14 @@ void from_json(const nlohmann::json& j, ObservableValue<T>& p) {
     T t = j;
     p = t;
 }
+
+template <class K, class V>
+class shared_ptr_map_with_creation : public std::map<K, std::shared_ptr<V>> {
+public:
+    std::shared_ptr<V>& operator[](const K& key) {
+        if (std::map<K, std::shared_ptr<V>>::find(key) == std::map<K, std::shared_ptr<V>>::end()) {
+            std::map<K, std::shared_ptr<V>>::insert(std::pair<K, std::shared_ptr<V>>(key, std::make_shared<V>()));
+        }
+        return std::map<K, std::shared_ptr<V>>::operator[](key);
+    }
+};

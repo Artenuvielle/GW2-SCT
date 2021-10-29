@@ -12,29 +12,35 @@ namespace GW2_SCT {
 	class Options {
 	public:
 		static bool getIsSkillFiltered(uint32_t skillId, const char* skillName);
-		static options_struct* get() { return &opt; }
+		static const std::shared_ptr<profile_options_struct> get() { return profile.operator std::shared_ptr<profile_options_struct>(); }
+		static ObservableValue<std::shared_ptr<profile_options_struct>> profile;
 		static void paint();
 		static void open();
 		static void save();
 		static void load();
-		static void setDefault();
+		static void loadProfile(std::string characterName);
 		static std::string getFontSelectionString(bool withMaster = true) { return withMaster ? fontSelectionStringWithMaster : fontSelectionString; };
 		static std::string getFontSizeTypeSelectionString() { return fontSizeTypeSelectionString; };
 		static std::string getSkillFilterTypeSelectionString() { return skillFilterTypeSelectionString; };
 		static bool isOptionsWindowOpen();
 	private:
+		static void setDefault();
 		static void paintGeneral();
 		static void paintScrollAreas();
 		static void paintProfessionColors();
 		static void paintSkillFilters();
 		static void paintSkillIcons();
-		static options_struct opt;
+		static void paintProfiles();
+		static options_struct options;
 		static bool windowIsOpen;
 		static std::string fontSelectionString;
 		static std::string fontSizeTypeSelectionString;
 		static std::string fontSelectionStringWithMaster;
 		static std::string skillFilterTypeSelectionString;
 		static std::string backupFileName;
+
+		static std::string currentProfileName;
+		static std::string currentCharacterName;
 	};
 
 	struct receiver_information {

@@ -27,17 +27,28 @@ GW2_SCT::SCTMain::~SCTMain() {
 }
 
 arcdps_exports* GW2_SCT::SCTMain::Init(char* arcvers, void* mod_wnd, void* mod_combat, void* mod_imgui, void* mod_options, void* mod_combat_local) {
+	Options::profile.onAssign([=](std::shared_ptr<profile_options_struct> oldProfile, std::shared_ptr<profile_options_struct> newProfile) {
+		if (currentScrollAreaPushBackCallbackId >= 0) {
+			oldProfile->scrollAreaOptions.removeOnEraseCallback(currentScrollAreaPushBackCallbackId);
+		}
+		if (currentScrollAreaEraseCallbackId >= 0) {
+			oldProfile->scrollAreaOptions.removeOnPushBackCallback(currentScrollAreaEraseCallbackId);
+		}
+		currentScrollAreaPushBackCallbackId = newProfile->scrollAreaOptions.addOnPushBackCallback([=](const std::shared_ptr<scroll_area_options_struct>& newVal) {
+			scrollAreas.push_back(std::make_shared<ScrollArea>(newVal));
+		});
+		currentScrollAreaEraseCallbackId = newProfile->scrollAreaOptions.addOnEraseCallback([=](int pos) {
+			scrollAreas.erase(std::begin(scrollAreas) + pos);
+		});
+	});
+	SkillIconManager::init();
+
 	FontManager::init();
 	Options::load();
-	SkillIconManager::init(); //requires options loaded
 	for (const auto& scrollAreaOptions : Options::get()->scrollAreaOptions)
 		scrollAreas.push_back(std::make_shared<ScrollArea>(scrollAreaOptions));
-	Options::get()->scrollAreaOptions.addOnPushBackCallback([=](const std::shared_ptr<scroll_area_options_struct>& newVal) {
-		scrollAreas.push_back(std::make_shared<ScrollArea>(newVal));
-	});
-	Options::get()->scrollAreaOptions.addOnEraseCallback([=](int pos) {
-		scrollAreas.erase(std::begin(scrollAreas) + pos);
-	});
+
+	
 
 	if (d3Device9 != nullptr) {
 		LOG("Found d3d9 device.");
@@ -134,13 +145,15 @@ uintptr_t GW2_SCT::SCTMain::CombatEventArea(cbtevent * ev, ag * src, ag * dst, c
 	if (ev != nullptr) {
 		if (revision == 1) {
 			cbtevent1* ev1 = reinterpret_cast<cbtevent1*>(ev);
-			if (src && src->self) {
+			if (src && src->self && selfInstID != ev1->src_instid) {
 				selfInstID = ev1->src_instid;
+				Options::loadProfile(std::string(src->name));
 			}
 		}
 		else {
-			if (src && src->self) {
+			if (src && src->self && selfInstID != ev->src_instid) {
 				selfInstID = ev->src_instid;
+				Options::loadProfile(std::string(src->name));
 			}
 		}
 	}

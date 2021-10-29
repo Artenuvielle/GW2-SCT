@@ -44,6 +44,9 @@ std::thread GW2_SCT::SkillIconManager::loadThread;
 int GW2_SCT::SkillIconManager::requestsPerMinute = 200;
 std::atomic<bool> GW2_SCT::SkillIconManager::keepLoadThreadRunning;
 
+long GW2_SCT::SkillIconManager::skillIconsEnabledCallbackId = -1;
+long GW2_SCT::SkillIconManager::preloadAllSkillIconsId = -1;
+
 std::unordered_map<uint32_t, std::pair<std::string, std::string>> GW2_SCT::SkillIconManager::staticFiles = {
 	{ 736, { "79FF0046A5F9ADA3B4C4EC19ADB4CB124D5F0021", "102848" } }, //Bleeding
 	{ 737, { "B47BF5803FED2718D7474EAF9617629AD068EE10", "102849" } }, //Burning
@@ -57,41 +60,48 @@ std::unordered_map<uint32_t, std::pair<std::string, std::string>> GW2_SCT::Skill
 };
 
 void GW2_SCT::SkillIconManager::init() {
-	internalInit();
-	Options::get()->skillIconsEnabled.onAssign([=](const bool& wasEnabled, const bool& isNowEnabled) {
-		if (wasEnabled == isNowEnabled) return;
-		if (isNowEnabled) {
-			std::thread t(SkillIconManager::internalInit);
-			t.detach();
+	Options::profile.onAssign([=](std::shared_ptr<profile_options_struct> oldProfile, std::shared_ptr<profile_options_struct> newProfile) {
+		if (skillIconsEnabledCallbackId >= 0) {
+			oldProfile->skillIconsEnabled.removeOnAssign(skillIconsEnabledCallbackId);
 		}
-		else {
-			if (loadThread.joinable()) {
-				keepLoadThreadRunning = false;
-				loadThread.detach();
+		if (preloadAllSkillIconsId >= 0) {
+			oldProfile->preloadAllSkillIcons.removeOnAssign(preloadAllSkillIconsId);
+		}
+		if (newProfile->skillIconsEnabled) SkillIconManager::internalInit();
+		skillIconsEnabledCallbackId = newProfile->skillIconsEnabled.onAssign([=](const bool& wasEnabled, const bool& isNowEnabled) {
+			if (wasEnabled == isNowEnabled) return;
+			if (isNowEnabled) {
+				std::thread t(SkillIconManager::internalInit);
+				t.detach();
 			}
-		}
-	});
-	Options::get()->preloadAllSkillIcons.onAssign([=](const bool& wasEnabled, const bool& isNowEnabled) {
-		if (wasEnabled == isNowEnabled) return;
-		if (isNowEnabled) {
-			std::thread t([]() {
-				requestedIDs->clear();
-				if (Options::get()->preloadAllSkillIcons) {
-					auto s_checkedIDs = sf::slock_safe_ptr(checkedIDs);
-					for (
-						auto checkableIDIterator = s_checkedIDs->begin();
-						checkableIDIterator != s_checkedIDs->end();
-						checkableIDIterator++) {
-						if (!checkableIDIterator->second) {
-							requestedIDs->push_back(checkableIDIterator->first);
+			else {
+				if (loadThread.joinable()) {
+					keepLoadThreadRunning = false;
+					loadThread.detach();
+				}
+			}
+		});
+		preloadAllSkillIconsId = newProfile->preloadAllSkillIcons.onAssign([=](const bool& wasEnabled, const bool& isNowEnabled) {
+			if (wasEnabled == isNowEnabled) return;
+			if (isNowEnabled) {
+				std::thread t([]() {
+					requestedIDs->clear();
+					if (Options::get()->preloadAllSkillIcons) {
+						auto s_checkedIDs = sf::slock_safe_ptr(checkedIDs);
+						for (
+							auto checkableIDIterator = s_checkedIDs->begin();
+							checkableIDIterator != s_checkedIDs->end();
+							checkableIDIterator++
+						) {
+							if (!checkableIDIterator->second) {
+								requestedIDs->push_back(checkableIDIterator->first);
+							}
 						}
 					}
-				}
-			});
-			t.detach();
-		} else {
-			// TODO: stop preload Thread
-		}
+				});
+				t.detach();
+			}
+		});
 	});
 }
 

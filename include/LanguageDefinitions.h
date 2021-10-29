@@ -7,6 +7,7 @@
   F(Scroll_Area_Option_UI,)\
   F(Receiver_Option_UI,)\
   F(Skill_Filter_Option_UI,)\
+  F(Profile_Option_UI,)\
   F(messagePlayerOutgoingPhysical,)\
   F(messagePlayerOutgoingCrit,)\
   F(messagePlayerOutgoingBleeding,)\
@@ -110,10 +111,10 @@
   F(Title,)\
   F(Menu_Bar_General,)\
   F(Menu_Bar_Scroll_Areas,)\
-  F(Menu_Bar_Messages,)\
   F(Menu_Bar_Profession_Colors,)\
   F(Menu_Bar_Filtered_Skills,)\
   F(Menu_Bar_Skill_Icons,)\
+  F(Menu_Bar_Profiles,)\
   F(General_Enabled,)\
   F(General_Scrolling_Speed,)\
   F(General_Scrolling_Speed_Toolip,)\
@@ -189,4 +190,13 @@
   F(Parameter_Description_c,)\
   F(Parameter_Description_r,)\
   F(Parameter_Description_i,)\
-  F(Default_Value,)
+  F(Default_Value,)\
+  F(Profile_Description,)\
+  F(Master_Profile,)\
+  F(Character_Specific_Profile_Heading,)\
+  F(Character_Specific_Profile_Enabled,)\
+  F(Current_Profile_Heading,)\
+  F(Current_Profile_Name,)\
+  F(Create_Profile_Copy,)\
+  F(Delete_Profile,)\
+  F(Profile_Copy_Suffix,)

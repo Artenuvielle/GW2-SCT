@@ -51,6 +51,21 @@ inline GW2_SCT::FilterType GW2_SCT::intToFilterType(int i) {
 void GW2_SCT::to_json(nlohmann::json& j, const options_struct& p) {
 	j = nlohmann::json{
 		{"revision", p.revision},
+		{"globalProfile", p.globalProfile},
+		{"profiles", p.profiles},
+		{"characterProfileMap", p.characterProfileMap}
+	};
+}
+
+void GW2_SCT::from_json(const nlohmann::json& j, options_struct& p) {
+	j.at("revision").get_to(p.revision);
+	j.at("globalProfile").get_to(p.globalProfile);
+	j.at("profiles").get_to(p.profiles);
+	j.at("characterProfileMap").get_to(p.characterProfileMap);
+}
+
+void GW2_SCT::to_json(nlohmann::json& j, const profile_options_struct& p) {
+	j = nlohmann::json{
 		{"sctEnabled", p.sctEnabled},
 		{"scrollingSpeed", p.scrollSpeed},
 		{"dropShadow", p.dropShadow},
@@ -78,8 +93,7 @@ void GW2_SCT::to_json(nlohmann::json& j, const options_struct& p) {
 	};
 }
 
-void GW2_SCT::from_json(const nlohmann::json& j, options_struct& p) {
-	j.at("revision").get_to(p.revision);
+void GW2_SCT::from_json(const nlohmann::json& j, profile_options_struct& p) {
 	j.at("sctEnabled").get_to(p.sctEnabled);
 	j.at("scrollingSpeed").get_to(p.scrollSpeed);
 	j.at("dropShadow").get_to(p.dropShadow);

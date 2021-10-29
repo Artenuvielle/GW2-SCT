@@ -36,12 +36,14 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 2.0-RC3 (WIP)
+	* profile system (have multiple profiles of setting to quickly switch between and maybe even character bound profiles)
+	* still planned for 2.0: replace other persistence file formats (language, skill remaps and skill icons)
 * 2.0-RC2
 	* published source code
 	* output messages to multiple scroll areas
 	* switched options persistence format
-	* still planned for 2.0: profile system (have multiple profiles of setting to quickly switch between and maybe even character bound profiles)
-	* still planned for 2.0: replace other persistence file formats (language, skill remaps and skill icons)
+	* added %r parameter into template system for profession names
 * 2.0-RC1
 	* added own font rendering system (problems with other addons font scaling should be fixed)
 	* changed memory pool for textures (this caused the game to freeze when resizing game window previously)

@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <vector>
 #include <imgui.h>
+#include <imgui_stdlib.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
 #include "Language.h"
@@ -73,14 +74,9 @@ int ImGui::ReceiverCollapsible(int index, std::shared_ptr<GW2_SCT::message_recei
 			OpenPopup(deleteModalLabel.c_str());
 		}
 		PopStyleColor();
-		{
-			std::vector<char> arr(512);
-			std::copy(receiverOptions->name.begin(), receiverOptions->name.size() < 512 ? receiverOptions->name.end() : receiverOptions->name.begin() + 512, arr.begin());
-			if (InputText(BuildLabel(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Receiver_Name), "receiver-name", indexString).c_str(), arr.data(), 512)) {
-				receiverOptions->name = arr.data();
-			}
-		}
 
+		InputText(BuildLabel(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Receiver_Name), "receiver-name", indexString).c_str(), &receiverOptions->name);
+		
 		if (BeginCombo(BuildLabel(langString(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Messages_Category), "receiver-category-combo", indexString).c_str(), GW2_SCT::categoryNames.at(receiverOptions->category).c_str())) {
 			int categoryIterator = 0;
 			for (auto& categoryAndNamePair : GW2_SCT::categoryNames) {
@@ -103,17 +99,13 @@ int ImGui::ReceiverCollapsible(int index, std::shared_ptr<GW2_SCT::message_recei
 		}
 
 		{
-			std::vector<char> arr(512);
-			{
-				const std::string& ref = receiverOptions->outputTemplate;
-				std::copy(ref.begin(), ref.size() < 512 ? ref.end() : ref.begin() + 512, arr.begin());
-			}
+			std::string edit = receiverOptions->outputTemplate;
 			struct UserData {
 				bool changedBG = false;
 				std::map<char, std::string> options;
 			} ud;
 			ud.options = GW2_SCT::receiverInformationPerCategoryAndType.at(receiverOptions->category).at(receiverOptions->type).options;
-			if (InputText(BuildLabel(langString(GW2_SCT::LanguageCategory::Receiver_Option_UI, GW2_SCT::LanguageKey::Template), "receiver-template-input", indexString).c_str(), arr.data(), 512, ImGuiInputTextFlags_CallbackAlways, [](ImGuiInputTextCallbackData* data) {
+			if (InputText(BuildLabel(langString(GW2_SCT::LanguageCategory::Receiver_Option_UI, GW2_SCT::LanguageKey::Template), "receiver-template-input", indexString).c_str(), &edit, ImGuiInputTextFlags_CallbackAlways, [](ImGuiInputTextCallbackData* data) {
 				UserData* d = static_cast<UserData*>(data->UserData);
 				if (!GW2_SCT::TemplateInterpreter::validate(std::string(data->Buf), d->options)) { //validate here
 					PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.f, 0.f, 0.f, .6f));
@@ -122,7 +114,7 @@ int ImGui::ReceiverCollapsible(int index, std::shared_ptr<GW2_SCT::message_recei
 				return 0;
 			}, &ud)) {
 				if (!ud.changedBG) {
-					receiverOptions->outputTemplate = std::string(arr.data());
+					receiverOptions->outputTemplate = edit;
 				}
 			}
 			if (IsItemHovered() && ud.options.size() > 0) {
@@ -331,4 +323,14 @@ int ImGui::FilterOptionLine(uint32_t i, GW2_SCT::filter_options_struct* opt) {
 	EndGroup();
 
 	return value_changed;
+}
+
+void ImGui::BeginDisabled() {
+	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));
+}
+
+void ImGui::EndDisabled() {
+	ImGui::PopStyleColor();
+	ImGui::PopItemFlag();
 }
