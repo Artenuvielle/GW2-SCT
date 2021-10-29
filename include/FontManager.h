@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <imgui.h>
 #include "stb_truetype.h"
 #include "Texture.h"
@@ -23,7 +23,7 @@ namespace GW2_SCT {
 		unsigned char* getBitmap();
 		float getAdvanceAndKerning(int nextCodepoint);
 	private:
-		static std::map<const stbtt_fontinfo*, std::map<float, std::map<int,Glyph*>>> _knownGlyphs;
+		static std::unordered_map<const stbtt_fontinfo*, std::unordered_map<float, std::unordered_map<int,Glyph*>>> _knownGlyphs;
 		Glyph(const stbtt_fontinfo* font, float scale, int codepoint, int ascent);
 		~Glyph();
 		const stbtt_fontinfo* _font = nullptr;
@@ -31,7 +31,7 @@ namespace GW2_SCT {
 		int _codepoint = 0, _x1 = 0, _x2 = 0, _y1 = 0, _y2 = 0, _advance = 0, _lsb = 0, _offsetTop = 0;
 		size_t _width = 0, _height = 0;
 		unsigned char* _bitmap = nullptr;
-		std::map<int, float> _advanceAndKerningCache;
+		std::unordered_map<int, float> _advanceAndKerningCache;
 		float getRealAdvanceAndKerning(int nextCodepoint);
 	};
 	class FontType {
@@ -47,9 +47,9 @@ namespace GW2_SCT {
 	private:
 		stbtt_fontinfo _info;
 		int _ascent, _descent, _lineGap;
-		std::map<float, float> _cachedScales;
-		std::map<float, bool> _isCachedScaleExact;
-		std::map<float, float> _cachedRealScales;
+		std::unordered_map<float, float> _cachedScales;
+		std::unordered_map<float, bool> _isCachedScaleExact;
+		std::unordered_map<float, float> _cachedRealScales;
 		float getCachedScale(float fontSize);
 		bool isCachedScaleExactForSize(float fontSize);
 		float getRealScale(float fontSize);
@@ -77,7 +77,7 @@ namespace GW2_SCT {
 			ImVec2 offsetFrom(ImVec2 origin);
 			ImVec2 offsetFrom(ImVec2 origin, float scale);
 		};
-		std::map<float, std::map<int, GlyphPositionDefinition>> _glyphPositionsAtSizes;
+		std::unordered_map<float, std::unordered_map<int, GlyphPositionDefinition>> _glyphPositionsAtSizes;
 
 		static std::vector<GlyphAtlas*> _allocatedAtlases;
 	};

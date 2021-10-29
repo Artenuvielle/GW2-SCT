@@ -25,13 +25,14 @@ static void         Decode85(const unsigned char* src, unsigned char* dst)
 	}
 }
 
-std::map<const stbtt_fontinfo*, std::map<float, std::map<int, GW2_SCT::Glyph*>>> GW2_SCT::Glyph::_knownGlyphs = std::map<const stbtt_fontinfo*, std::map<float, std::map<int, GW2_SCT::Glyph*>>>();
+std::unordered_map<const stbtt_fontinfo*, std::unordered_map<float, std::unordered_map<int, GW2_SCT::Glyph*>>> GW2_SCT::Glyph::_knownGlyphs = {};
 
 GW2_SCT::Glyph* GW2_SCT::Glyph::GetGlyph(const stbtt_fontinfo* font, float scale, int codepoint, int ascent) {
-    try {
-        return _knownGlyphs[font][scale].at(codepoint);
-    }
-    catch (std::exception&) {
+    auto& fontatScale = _knownGlyphs[font][scale];
+    auto it = fontatScale.find(codepoint);
+    if (it != fontatScale.end()) {
+        return it->second;
+    } else {
         return _knownGlyphs[font][scale][codepoint] = new Glyph(font, scale, codepoint, ascent);
     }
 }
@@ -93,21 +94,20 @@ GW2_SCT::Glyph::Glyph(const stbtt_fontinfo* font, float scale, int codepoint, in
 GW2_SCT::Glyph::~Glyph() { if (_bitmap == nullptr) free(_bitmap); }
 
 float GW2_SCT::Glyph::getRealAdvanceAndKerning(int nextCodepoint) {
-    try {
-        return _advanceAndKerningCache.at(nextCodepoint);
-    }
-    catch (std::exception) {
-        _advanceAndKerningCache[nextCodepoint] = (float)(_advance + stbtt_GetCodepointKernAdvance(_font, _codepoint, nextCodepoint)) * _scale;
-        return _advanceAndKerningCache[nextCodepoint];
+    auto it = _advanceAndKerningCache.find(nextCodepoint);
+    if (it != _advanceAndKerningCache.end()) {
+        return it->second;
+    } else {
+        return _advanceAndKerningCache[nextCodepoint] = (float)(_advance + stbtt_GetCodepointKernAdvance(_font, _codepoint, nextCodepoint)) * _scale;
     }
 }
 
 std::vector<GW2_SCT::FontType::GlyphAtlas*> GW2_SCT::FontType::_allocatedAtlases;
 
 GW2_SCT::FontType::FontType(unsigned char* data, size_t size) {
-    _cachedScales = std::map<float, float>();
-    _isCachedScaleExact = std::map<float, bool>();
-    _cachedRealScales = std::map<float, float>();
+    _cachedScales = {};
+    _isCachedScaleExact = {};
+    _cachedRealScales = {};
     if (!stbtt_InitFont(&_info, data, 0)) {
         LOG("Failed initializing font.");
     }
@@ -307,9 +307,10 @@ void GW2_SCT::FontType::drawAtlas() {
 #endif
 
 float GW2_SCT::FontType::getCachedScale(float fontSize) {
-    try {
-        return _cachedScales.at(fontSize);
-    } catch (std::exception&) {
+    auto it = _cachedScales.find(fontSize);
+    if (it != _cachedScales.end()) {
+        return it->second;
+    } else {
         for (auto& scale : _cachedScales) {
             if (isCachedScaleExactForSize(scale.first) && scale.first * 0.75 <= fontSize && scale.first * 1.05 >= fontSize) {
                 _cachedScales[fontSize] = scale.second;
@@ -326,22 +327,21 @@ float GW2_SCT::FontType::getCachedScale(float fontSize) {
 }
 
 bool GW2_SCT::FontType::isCachedScaleExactForSize(float fontSize) {
-    try {
-        return _isCachedScaleExact.at(fontSize);
-    }
-    catch (std::exception&) {
-        _isCachedScaleExact[fontSize] = false;
-        return _isCachedScaleExact[fontSize];
+    auto it = _isCachedScaleExact.find(fontSize);
+    if (it != _isCachedScaleExact.end()) {
+        return it->second;
+    } else {
+        return _isCachedScaleExact[fontSize] = false;
     }
 }
 
 float GW2_SCT::FontType::getRealScale(float fontSize) {
-    try {
-        return _cachedRealScales.at(fontSize);
-    } catch (std::exception&) {
+    auto it = _cachedRealScales.find(fontSize);
+    if (it != _cachedRealScales.end()) {
+        return it->second;
+    } else {
         _isCachedScaleExact[fontSize] = false;
-        _cachedRealScales[fontSize] = stbtt_ScaleForPixelHeight(&_info, fontSize);
-        return _cachedRealScales[fontSize];
+        return _cachedRealScales[fontSize] = stbtt_ScaleForPixelHeight(&_info, fontSize);
     }
 }
 
@@ -425,8 +425,7 @@ void GW2_SCT::FontManager::init() {
 			FontType* fontType = nullptr;
 			try {
 				fontType = FontManager::loadFontTypeFromFile(fontFilePath);
-			}
-			catch (std::exception& e) {
+			} catch (std::exception& e) {
 				LOG("Error loading font: ", e.what())
 			}
 			if (fontType != nullptr) {

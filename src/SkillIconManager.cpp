@@ -387,14 +387,17 @@ public:
 };
 
 void setScaledTransparency(unsigned char* cur) {
-	int r = std::max(0, cur[0] - 10);
-	int g = std::max(0, cur[1] - 10);
-	int b = std::max(0, cur[2] - 10);
-	cur[3] = std::min(0xff, 0xff * ((r * r + g * g + b * b) / 300));
+	int r = cur[0];
+	int g = cur[1];
+	int b = cur[2];
+	cur[3] = std::min(0xfe, (r + r + r + b + g + g + g + g) >> 3 * 0xff / 10);
 }
 
 bool pixelIsBlack(unsigned char* cur) {
-	return cur[0] <= 20 && cur[1] <= 20 && cur[2] <= 20;
+	int r = cur[0];
+	int g = cur[1];
+	int b = cur[2];
+	return (r + r + r + b + g + g + g + g) >> 3 < 10;
 }
 
 bool borderNIsBlack(ImageDataHelper data, int n, int image_width, int image_height) {

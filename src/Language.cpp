@@ -136,7 +136,7 @@ std::map<GW2_SCT::LanguageCategory, std::map<GW2_SCT::LanguageKey, const char*>>
 		{ GW2_SCT::LanguageKey::Skill_Icons_Enable, "Enable skill icons" },
 		{ GW2_SCT::LanguageKey::Skill_Icons_Preload_Description, "Preloading skill icons will download every possible skill icon from the GW2 rendering API. This will require ~25MB of free memory space available. If not enabled, icons will be only downloaded as needed." },
 		{ GW2_SCT::LanguageKey::Skill_Icons_Preload, "Preload all skill icons" },
-		{ GW2_SCT::LanguageKey::Skill_Icons_Display_Type, "Postprocessing" },
+		{ GW2_SCT::LanguageKey::Skill_Icons_Display_Type, "Transparency" },
 		{ GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Normal, "None" },
 		{ GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Black_Culled, "Cull dark pixels" },
 		{ GW2_SCT::LanguageKey::Skill_Icons_Display_Type_Black_Border_Culled, "Cull border squares of dark pixels" },
