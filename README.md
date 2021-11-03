@@ -39,6 +39,7 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 * 2.0-RC3 (WIP)
 	* profile system (have multiple profiles of setting to quickly switch between and also have character bound profiles)
 	* transparency option for skill icons
+	* recording and playback of messages for easier option adjustment
 	* still planned for 2.0: replace other persistence file formats (language, skill remaps and skill icons)
 * 2.0-RC2
 	* published source code

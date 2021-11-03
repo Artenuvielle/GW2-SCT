@@ -37,7 +37,7 @@ namespace ImGui {
 	}
 
 	void HexColorEdit(const char* label, std::string* color);
-	void SameLineEnd(float offset_from_end_x, float spacing_w);
+	void SameLineEnd(float offset_from_end_x);
 	int ReceiverCollapsible(int index, std::shared_ptr<GW2_SCT::message_receiver_options_struct> receiverOptions);
 	bool NewReceiverLine(GW2_SCT::MessageCategory* categoryOut, GW2_SCT::MessageType* typeOut);
 	int FilterOptionLine(uint32_t id, GW2_SCT::filter_options_struct* opt);

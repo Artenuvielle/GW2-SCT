@@ -20,8 +20,12 @@ namespace GW2_SCT {
 		uint64_t otherEntityId = 0;
 		uint32_t otherEntityProf = 0;
 		bool hasToBeFiltered = false;
-		MessageData(cbtevent* ev, ag* entity, ag * otherEntity, char* skillname);
-		MessageData(cbtevent1* ev, ag* entity, ag * otherEntity, char* skillname);
+		MessageData(cbtevent* ev, ag* entity, ag * otherEntity, const char* skillname);
+		MessageData(cbtevent1* ev, ag* entity, ag * otherEntity, const char* skillname);
+#ifdef _DEBUG
+		MessageData(int32_t value, int32_t buffValue, uint32_t overstack_value, uint32_t skillId, ag* entity, ag* otherEntity, const char* skillname);
+#endif // _DEBUG
+		MessageData() {};
 	};
 
 	struct MessageHandler {
@@ -37,7 +41,9 @@ namespace GW2_SCT {
 	public:
 		EventMessage(MessageCategory category, MessageType type, cbtevent* ev, ag* src, ag* dst, char* skillname);
 		EventMessage(MessageCategory category, MessageType type, cbtevent1* ev, ag* src, ag* dst, char* skillname);
+		EventMessage(MessageCategory category, MessageType type, std::shared_ptr<MessageData>);
 		std::string getStringForOptions(std::shared_ptr<message_receiver_options_struct> opt);
+		std::shared_ptr<MessageData> getCopyOfFirstData();
 		MessageCategory getCategory();
 		MessageType getType();
 		bool hasToBeFiltered();

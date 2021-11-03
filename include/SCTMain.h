@@ -34,9 +34,9 @@ namespace GW2_SCT {
 		uintptr_t CombatEventLocal(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision);
 		uintptr_t UIUpdate();
 		uintptr_t UIOptions();
+		void emitMessageToScrollAreas(std::shared_ptr<EventMessage> m);
 	private:
 		uint32_t remapSkillID(uint32_t originalID);
-		void emitMessageToScrollAreas(std::shared_ptr<EventMessage> m);
 		arcdps_exports arc_exports;
 
 		uintptr_t selfInstID = -1;

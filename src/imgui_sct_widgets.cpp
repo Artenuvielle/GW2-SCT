@@ -49,7 +49,7 @@ void ImGui::HexColorEdit(const char* label, std::string* color) {
 		ImGui::SetTooltip("Color:\n(%.2f,%.2f,%.2f)\n#%s", col[0], col[1], col[2], color->c_str());
 }
 
-void ImGui::SameLineEnd(float offset_from_end_x, float spacing_w) {
+void ImGui::SameLineEnd(float offset_from_end_x) {
 	const ImGuiStyle& style = GImGui->Style;
 	SameLine(GImGui->CurrentWindow->Size.x - offset_from_end_x - (GImGui->CurrentWindow->ScrollbarY ? style.ScrollbarSize : 0), 0);
 }
@@ -66,7 +66,7 @@ int ImGui::ReceiverCollapsible(int index, std::shared_ptr<GW2_SCT::message_recei
 		isOpen = true;
 		SameLine(style.FramePadding.x * 3 + GImGui->FontSize);
 		Text(receiverOptions->name.c_str());
-		SameLineEnd(2 * (square_size + style.FramePadding.y * 2) + style.ItemInnerSpacing.x, 0);
+		SameLineEnd(2 * (square_size + style.FramePadding.y * 2) + style.ItemInnerSpacing.x);
 		HexColorEdit(BuildLabel("receiver-color-picker", indexString).c_str(), &receiverOptions->color);
 		SameLine(0, style.ItemInnerSpacing.x);
 		PushStyleColor(ImGuiCol_Button, ImVec4(0.67f, 0.40f, 0.40f, 0.60f));
@@ -166,7 +166,7 @@ int ImGui::ReceiverCollapsible(int index, std::shared_ptr<GW2_SCT::message_recei
 	if (!isOpen) {
 		SameLine(style.FramePadding.x * 3 + GImGui->FontSize);
 		Text(receiverOptions->name.c_str());
-		SameLineEnd(2 * (square_size + style.FramePadding.y * 2) + style.ItemInnerSpacing.x, 0);
+		SameLineEnd(2 * (square_size + style.FramePadding.y * 2) + style.ItemInnerSpacing.x);
 		HexColorEdit(BuildLabel("receiver-color-picker", indexString).c_str(), &receiverOptions->color);
 		SameLine(0, style.ItemInnerSpacing.x);
 		PushStyleColor(ImGuiCol_Button, ImVec4(0.67f, 0.40f, 0.40f, 0.60f));
@@ -220,7 +220,7 @@ bool ImGui::NewReceiverLine(GW2_SCT::MessageCategory* categoryOut, GW2_SCT::Mess
 		EndCombo();
 	}
 	PopItemWidth();
-	SameLineEnd(button_size, 0);
+	SameLineEnd(button_size);
 	bool ret = false;
 	PushStyleColor(ImGuiCol_Button, ImVec4(0.67f, 0.40f, 0.40f, 0.60f));
 	if (Button("+", ImVec2(button_size, button_size))) {

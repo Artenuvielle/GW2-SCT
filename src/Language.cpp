@@ -97,6 +97,9 @@ std::map<GW2_SCT::LanguageCategory, std::map<GW2_SCT::LanguageKey, const char*>>
 		{ GW2_SCT::LanguageKey::Profession_Colors_Revenant, "Revenant" },
 		{ GW2_SCT::LanguageKey::Profession_Colors_Undetectable, "Undetectable profession" },
 	} },
+	{ GW2_SCT::LanguageCategory::Example_Message_UI, {
+		{ GW2_SCT::LanguageKey::Title, "Example Messages" },
+	} },
 	{ GW2_SCT::LanguageCategory::Message, {
 		{ GW2_SCT::LanguageKey::Multiple_Sources, "Multiple" },
 		{ GW2_SCT::LanguageKey::Number_Of_Hits, "Hits" },

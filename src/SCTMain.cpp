@@ -9,6 +9,7 @@
 #include "SkillIconManager.h"
 #include "FontManager.h"
 #include "Language.h"
+#include "ExampleMessageOptions.h"
 #include <chrono>
 
 #if _DEBUG
@@ -108,6 +109,8 @@ arcdps_exports* GW2_SCT::SCTMain::Init(char* arcvers, void* mod_wnd, void* mod_c
 			skillRemaps[from] = to;
 		}
 	}
+
+	ExampleMessageOptions::setMain(this);
 	
 	/* for arcdps */
 	memset(&arc_exports, 0, sizeof(arcdps_exports));
@@ -379,6 +382,7 @@ uintptr_t GW2_SCT::SCTMain::UIUpdate() {
 	auto start_time = std::chrono::high_resolution_clock::now();
 #endif
 	Options::paint();
+	ExampleMessageOptions::paint();
 	if (Options::get()->sctEnabled) {
 		ImVec2 windowSize((float)windowWidth, (float)windowHeight);
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -408,6 +412,8 @@ uintptr_t GW2_SCT::SCTMain::UIOptions() {
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 4, 3 });
 	if (ImGui::Button(langString(LanguageCategory::Option_UI, LanguageKey::Title)))
 		Options::open();
+	if (ImGui::Button(langString(LanguageCategory::Example_Message_UI, LanguageKey::Title)))
+		ExampleMessageOptions::open();
 	ImGui::PopStyleVar();
 	return 0;
 }
@@ -422,4 +428,5 @@ void GW2_SCT::SCTMain::emitMessageToScrollAreas(std::shared_ptr<EventMessage> m)
 	for (auto scrollArea : scrollAreas) {
 		scrollArea->receiveMessage(m);
 	}
+	ExampleMessageOptions::receiveMessage(m);
 }

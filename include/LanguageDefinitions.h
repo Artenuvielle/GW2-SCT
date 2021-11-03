@@ -3,6 +3,7 @@
 #define LANGUAGE_CATEGORY(F)\
   F(General,=0)\
   F(Option_UI,)\
+  F(Example_Message_UI,)\
   F(Message,)\
   F(Scroll_Area_Option_UI,)\
   F(Receiver_Option_UI,)\

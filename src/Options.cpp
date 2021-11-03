@@ -474,6 +474,8 @@ void GW2_SCT::Options::loadProfile(std::string characterName) {
 
 void GW2_SCT::Options::setDefault() {
 	options.revision = SCT_VERSION_STRING;
+	currentProfileName = defaultProfileName;
+	profile = options.profiles[defaultProfileName] = std::make_shared<profile_options_struct>();
 	auto incomingStruct = std::make_shared<scroll_area_options_struct>(scroll_area_options_struct{
 		std::string(langStringG(LanguageKey::Default_Scroll_Area_Incoming)),
 		-249.f,
@@ -561,7 +563,7 @@ void GW2_SCT::Options::paintScrollAreas() {
 			ImGui::SameLine();
 			ImGui::SetCursorPosY(ImGui::GetCursorPosY() + style.FramePadding.y);
 			ImGui::Text(scrollAreaOptions->get()->name.c_str());
-			ImGui::SameLineEnd(square_size + style.FramePadding.y * 2, 0);
+			ImGui::SameLineEnd(square_size + style.FramePadding.y * 2);
 			ImGui::SetCursorPosY(ImGui::GetCursorPosY() - style.FramePadding.y);
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.67f, 0.40f, 0.40f, 0.60f));
 			std::string modalName = ImGui::BuildLabel(langString(GW2_SCT::LanguageCategory::Scroll_Area_Option_UI, GW2_SCT::LanguageKey::Delete_Confirmation_Title), "scroll-area-delete-modal", i);
@@ -590,7 +592,7 @@ void GW2_SCT::Options::paintScrollAreas() {
 			}
 		}
 		ImGui::Text("");
-		ImGui::SameLineEnd(square_size + style.FramePadding.y * 2, 0);
+		ImGui::SameLineEnd(square_size + style.FramePadding.y * 2);
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.67f, 0.40f, 0.40f, 0.60f));
 		if (ImGui::Button("+", ImVec2(square_size + style.FramePadding.y * 2, square_size + style.FramePadding.y * 2))) {
 			scroll_area_options_struct newScrollArea{ langString(LanguageCategory::Scroll_Area_Option_UI, LanguageKey::Scroll_Areas_New), 0.f, 0.f, 40.f, 260.f, TextAlign::CENTER, TextCurve::STRAIGHT, ScrollAreaOutlineState::NONE, {} };

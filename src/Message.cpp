@@ -279,7 +279,7 @@ namespace GW2_SCT {
 	};
 }
 
-GW2_SCT::MessageData::MessageData(cbtevent * ev, ag * entity, ag * otherEntity, char * skillname) {
+GW2_SCT::MessageData::MessageData(cbtevent * ev, ag * entity, ag * otherEntity, const char * skillname) {
 	skillName = (char*)malloc(strlen(skillname) + 1);
 	strcpy_s(skillName, strlen(skillname) + 1, skillname);
 	value = ev->value;
@@ -304,7 +304,7 @@ GW2_SCT::MessageData::MessageData(cbtevent * ev, ag * entity, ag * otherEntity, 
 	hasToBeFiltered = Options::getIsSkillFiltered(ev->skillid, skillname);
 }
 
-GW2_SCT::MessageData::MessageData(cbtevent1 * ev, ag * entity, ag * otherEntity, char * skillname) {
+GW2_SCT::MessageData::MessageData(cbtevent1 * ev, ag * entity, ag * otherEntity, const char * skillname) {
 	skillName = (char*)malloc(strlen(skillname) + 1);
 	strcpy_s(skillName, strlen(skillname) + 1, skillname);
 	value = ev->value;
@@ -329,6 +329,30 @@ GW2_SCT::MessageData::MessageData(cbtevent1 * ev, ag * entity, ag * otherEntity,
 	}
 	hasToBeFiltered = Options::getIsSkillFiltered(ev->skillid, skillname);
 }
+
+#ifdef _DEBUG
+GW2_SCT::MessageData::MessageData(int32_t value, int32_t buffValue, uint32_t overstack_value, uint32_t skillId, ag* entity, ag* otherEntity, const char* skillname)
+	: value(value), buffValue(buffValue), overstack_value(overstack_value), skillId(skillId) {
+	skillName = (char*)malloc(strlen(skillname) + 1);
+	strcpy_s(skillName, strlen(skillname) + 1, skillname);
+	if (entity) {
+		entityId = entity->id;
+		entityProf = entity->prof;
+		if (entity->name) {
+			entityName = (char*)malloc(strlen(entity->name) + 1);
+			strcpy_s(entityName, strlen(entity->name) + 1, entity->name);
+		}
+	}
+	if (otherEntity) {
+		otherEntityId = otherEntity->id;
+		otherEntityProf = otherEntity->prof;
+		if (otherEntity->name) {
+			otherEntityName = (char*)malloc(strlen(otherEntity->name) + 1);
+			strcpy_s(otherEntityName, strlen(otherEntity->name) + 1, otherEntity->name);
+		}
+	}
+}
+#endif // _DEBUG
 
 GW2_SCT::MessageHandler::MessageHandler(std::vector<std::function<bool(std::vector<std::shared_ptr<MessageData>>, std::vector<std::shared_ptr<MessageData>>)>> tryToCombineWithFunctions, std::map<char, std::function<std::string(std::vector<std::shared_ptr<MessageData>>)>> parameterToStringFunctions)
 	: tryToCombineWithFunctions(tryToCombineWithFunctions), parameterToStringFunctions(parameterToStringFunctions) {}
@@ -367,6 +391,11 @@ GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, 
 		OutputDebugString("GW2_SCT: Received message for unknown category.");
 		break;
 	}
+}
+
+GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, std::shared_ptr<MessageData> data)
+	: category(category), type(type) {
+	messageDatas.push_back(data);
 }
 
 std::string GW2_SCT::EventMessage::getStringForOptions(std::shared_ptr<message_receiver_options_struct> opt) {
@@ -408,6 +437,14 @@ std::string GW2_SCT::EventMessage::getStringForOptions(std::shared_ptr<message_r
 	} else {
 		return "";
 	}
+}
+
+std::shared_ptr<GW2_SCT::MessageData> GW2_SCT::EventMessage::getCopyOfFirstData()
+{
+	if (messageDatas.size() > 0) {
+		return std::make_shared<MessageData>(*messageDatas.front());
+	}
+	return std::shared_ptr<MessageData>();
 }
 
 GW2_SCT::MessageCategory GW2_SCT::EventMessage::getCategory() {
