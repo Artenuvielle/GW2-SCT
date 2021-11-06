@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <fstream>
 #include "imgui.h"
-#include "SimpleIni.h"
 #include "Options.h"
 #include "SkillIconManager.h"
 #include "FontManager.h"
@@ -85,29 +84,40 @@ arcdps_exports* GW2_SCT::SCTMain::Init(char* arcvers, void* mod_wnd, void* mod_c
 		LOG("Found no d3 device (version: ", d3dversion, ")!");
 	}
 
-	CSimpleIni remapIni;
-	std::string remapIniFilename = getSCTPath() + "remap.ini";
-	SI_Error rc = remapIni.LoadFile(remapIniFilename.c_str());
-	if (rc < 0) {
-		LOG("No remap.ini file loaded");
-	}
-	else {
-		for (auto entry : *remapIni.GetSection("Active")) {
-			uint32_t from = stoi(std::string(entry.first.pItem));
-			uint32_t to = stoi(std::string(entry.second));
-			while (skillRemaps.count(to) != 0) {
-				if (from == to) break;
-				to = skillRemaps[to];
-			}
-			LOG("Remapping id ", from, " to id ", to);
-			for (auto currentRemap : skillRemaps) {
-				if (currentRemap.second == from) {
-					skillRemaps[currentRemap.first] = to;
-					LOG("Touched remap from id ", currentRemap.first, " to id ", to);
-				}
-			}
-			skillRemaps[from] = to;
+	std::string remapJsonFilename = getSCTPath() + "remap.json";
+	if (file_exist(remapJsonFilename)) {
+		LOG("Loading skill.json");
+		std::string line, text;
+		std::ifstream in(remapJsonFilename);
+		while (std::getline(in, line)) {
+			text += line + "\n";
 		}
+		in.close();
+		try {
+			std::map<std::string, std::string> remapJsonValues = nlohmann::json::parse(text);
+			for (const auto& entry : remapJsonValues) {
+				uint32_t from = stoi(std::string(entry.first));
+				uint32_t to = stoi(std::string(entry.second));
+				while (skillRemaps.find(to) != skillRemaps.end()) {
+					if (from == to) break;
+					to = skillRemaps[to];
+				}
+				if (from == to) break;
+				LOG("Remapping id ", from, " to id ", to);
+				for (auto currentRemap : skillRemaps) {
+					if (currentRemap.second == from) {
+						skillRemaps[currentRemap.first] = to;
+						LOG("Touched remap from id ", currentRemap.first, " to id ", to);
+					}
+				}
+				skillRemaps[from] = to;
+			}
+		}
+		catch (std::exception& e) {
+			LOG("Error parsing remap.json");
+		}
+	} else {
+		LOG("No remap.json file loaded");
 	}
 
 	ExampleMessageOptions::setMain(this);

@@ -41,7 +41,7 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 	* transparency option for skill icons
 	* recording and playback of messages for easier option adjustment
 	* switched language and skill icon persistence format
-	* still planned for 2.0: replace skill remaps persistence file format
+	* switched skill remap persistence format (if you want to remap e.g. skill id 46469 to 9168 and 30308 to 9120, put `{"46469":"9168","30308":"9120"}` into remap.json)
 * 2.0-RC2
 	* published source code
 	* output messages to multiple scroll areas
