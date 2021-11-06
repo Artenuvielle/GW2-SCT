@@ -5,7 +5,6 @@
 #include <thread>
 #include <functional>
 #include <regex>
-#include "SimpleIni.h"
 #include "Common.h"
 #include "Options.h"
 #define STB_IMAGE_IMPLEMENTATION
@@ -191,12 +190,23 @@ void GW2_SCT::SkillIconManager::loadThreadCycle() {
 		}
 	}
 
-	std::string skillIniFilename = getSCTPath() + "skill.ini";
-
-	CSimpleIniA skillIni;
-	SI_Error rc = skillIni.LoadFile(skillIniFilename.c_str());
-	if (rc < 0) {
-		LOG("Warning: could not find a skill.ini");
+	std::string skillJsonFilename = getSCTPath() + "skill.json";
+	std::map<uint32_t,std::string> skillJsonValues;
+	if (file_exist(skillJsonFilename)) {
+		LOG("Loading skill.json");
+		std::string line, text;
+		std::ifstream in(skillJsonFilename);
+		while (std::getline(in, line)) {
+			text += line + "\n";
+		}
+		in.close();
+		try {
+			skillJsonValues = nlohmann::json::parse(text);
+		} catch (std::exception& e) {
+			LOG("Error parsing skill.json");
+		}
+	} else {
+		LOG("Warning: could not find a skill.json");
 	}
 
 	std::regex renderAPIURLMatcher("/file/([A-Z0-9]+)/([0-9]+)\\.(png|jpg)");
@@ -243,8 +253,8 @@ void GW2_SCT::SkillIconManager::loadThreadCycle() {
 				uint32_t curSkillId = std::get<0>(*it);
 				try {
 					std::string desc = std::get<1>(*it) + "/" + std::get<2>(*it);
-					std::string iniKey = "Signature_" + std::to_string(curSkillId);
-					std::string iniVal(skillIni.GetValue("Icon_Signatures", iniKey.c_str(), ""));
+					auto it = skillJsonValues.find(curSkillId);
+					std::string iniVal = it == skillJsonValues.end() ? "" : it->second;
 					std::string curImagePath = iconPath + std::to_string(curSkillId) + ".jpg";
 					if (iniVal.compare(desc) != 0 || !std::filesystem::exists(curImagePath.c_str())) {
 						std::this_thread::sleep_for(std::chrono::milliseconds(60000 / requestsPerMinute));
@@ -261,7 +271,7 @@ void GW2_SCT::SkillIconManager::loadThreadCycle() {
 						fileStream.close();
 						LOG("Finished downloading skill icon.");
 						binaryLoadedIcons.push_back(std::pair<uint32_t, std::shared_ptr<std::vector<BYTE>>>(curSkillId, loadBinaryFileData(curImagePath)));
-						skillIni.SetValue("Icon_Signatures", iniKey.c_str(), desc.c_str());
+						skillJsonValues[curSkillId] = desc;
 					}
 				}
 				catch (std::exception& e) {
@@ -279,7 +289,14 @@ void GW2_SCT::SkillIconManager::loadThreadCycle() {
 		}
 	}
 
-	skillIni.SaveFile(skillIniFilename.c_str());
+	std::ofstream out(skillJsonFilename);
+	nlohmann::json outJson = skillJsonValues;
+#if _DEBUG
+	out << outJson.dump(2);
+#else
+	out << outJson.dump();
+#endif
+	out.close();
 	LOG("Skillicon load thread stopping");
 }
 
