@@ -62,10 +62,9 @@ public:
             for (auto& callback : onPushBackCallbacks) callback.second(val);
     }
 private:
-    //std::vector<std::function<void(int)>> onEraseCallbacks;
     std::map<long, std::function<void(int)>> onEraseCallbacks = {};
     long nextEraseCallbacksIndex = 0;
-    //std::vector<std::function<void(const T&)>> onPushBackCallbacks;
+
     std::map<long, std::function<void(const T&)>> onPushBackCallbacks = {};
     long nextPushBackCallbacksIndex = 0;
 };

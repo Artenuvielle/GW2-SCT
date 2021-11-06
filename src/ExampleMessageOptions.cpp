@@ -57,7 +57,7 @@ void GW2_SCT::ExampleMessageOptions::paint() {
 		State initialState = state;
 
 		if (initialState != State::READY_TO_RECORD) ImGui::BeginDisabled();
-		if (ImGui::Button("Start recording messages")) {
+		if (ImGui::Button(ImGui::BuildVisibleLabel(langString(LanguageCategory::Example_Message_UI, LanguageKey::Start_Recording), "start-recording-button").c_str())) {
 			state = State::RECORDING;
 			recordingStart = std::chrono::system_clock::now();
 		}
@@ -66,7 +66,7 @@ void GW2_SCT::ExampleMessageOptions::paint() {
 		ImGui::SameLine();
 		
 		if (initialState != State::RECORDING) ImGui::BeginDisabled();
-		if (ImGui::Button("Stop recording messages")) {
+		if (ImGui::Button(ImGui::BuildVisibleLabel(langString(LanguageCategory::Example_Message_UI, LanguageKey::Stop_Recording), "stop-recording-button").c_str())) {
 			state = State::READY_TO_RECORD;
 		}
 		if (initialState != State::RECORDING) ImGui::EndDisabled();
@@ -92,27 +92,18 @@ void GW2_SCT::ExampleMessageOptions::paint() {
 			ImGui::SameLineEnd(square_size + style.FramePadding.y + style.WindowPadding.x * 2);
 			ImGui::SetCursorPosY(ImGui::GetCursorPosY() - style.FramePadding.y);
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.67f, 0.40f, 0.40f, 0.60f));
+			if (initialState != State::EMITTING) ImGui::BeginDisabled();
 			if (ImGui::Button(ImGui::BuildLabel("-", "delete-example-message", i).c_str(), ImVec2(square_size + style.FramePadding.y * 2, square_size + style.FramePadding.y * 2))) {
 				messageToEmmit = messagesToEmmit.erase(messageToEmmit);
 			}
+			if (initialState != State::EMITTING) ImGui::EndDisabled();
 			ImGui::PopStyleColor();
 			i++;
 		}
-		static int newExampleMessageTime = 0;
-		ImGui::InputInt("after milliseconds", &newExampleMessageTime, 100, 1000);
-		ImGui::SameLineEnd(square_size + style.FramePadding.y + style.WindowPadding.x * 2);
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.67f, 0.40f, 0.40f, 0.60f));
-		if (ImGui::Button(ImGui::BuildLabel("+", "add-example-message", i).c_str(), ImVec2(square_size + style.FramePadding.y * 2, square_size + style.FramePadding.y * 2))) {
-			messagesToEmmit.insert(std::pair<std::chrono::system_clock::duration,MessageInformation>(
-				std::chrono::system_clock::duration(newExampleMessageTime),
-				{ MessageCategory::PLAYER_OUT, MessageType::PHYSICAL, std::make_shared<MessageData>() }
-			));
-		}
-		ImGui::PopStyleColor();
 		ImGui::EndChild();
 		
 		if (initialState == State::EMITTING) ImGui::BeginDisabled();
-		if (ImGui::Button("Start emitting messages")) {
+		if (ImGui::Button(ImGui::BuildVisibleLabel(langString(LanguageCategory::Example_Message_UI, LanguageKey::Start_Emitting), "start-emitting-button").c_str())) {
 			state = State::EMITTING;
 			emitterThread = new std::thread(ExampleMessageOptions::emitMessages);
 		}
@@ -121,7 +112,7 @@ void GW2_SCT::ExampleMessageOptions::paint() {
 		ImGui::SameLine();
 
 		if (initialState != State::EMITTING) ImGui::BeginDisabled();
-		if (ImGui::Button("Stop emitting messages")) {
+		if (ImGui::Button(ImGui::BuildVisibleLabel(langString(LanguageCategory::Example_Message_UI, LanguageKey::Stop_Emitting), "stop-emitting-button").c_str())) {
 			state = State::READY_TO_RECORD;
 			emitterThread->join();
 			delete emitterThread;
@@ -132,7 +123,7 @@ void GW2_SCT::ExampleMessageOptions::paint() {
 		
 		bool messagesEmpty = messagesToEmmit.empty();
 		if (messagesEmpty) ImGui::BeginDisabled();
-		if (ImGui::Button("Clear all")) {
+		if (ImGui::Button(ImGui::BuildVisibleLabel(langString(LanguageCategory::Example_Message_UI, LanguageKey::Clear_Recorded_Messages), "Clear all").c_str())) {
 			messagesToEmmit.clear();
 		}
 		if (messagesEmpty) ImGui::EndDisabled();

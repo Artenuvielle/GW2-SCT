@@ -1,0 +1,296 @@
+{
+  "General": {
+    "Outdated_Popup_Title": "ArcDPS outdated",
+    "Outdated_Popup_Content": "You are running an old version of ArcDPS some features of SCT\nmay not work properly on can cause crashes. Updating ArcDPS is advised.",
+    "Outdated_Popup_Found_Version": "Found version",
+    "Outdated_Popup_Required_Version": "Required version",
+    "Outdated_Popup_Confirmation": "OK",
+    "Font": "Font",
+    "Font_Size": "Font Size",
+    "Font_Size_Type": "Font Size Type",
+    "Default_Font_Size": "Default Font Size",
+    "Default_Crit_Font_Size": "Default Crit Font Size",
+    "Custom_Font_Size": "Custom Font Size",
+    "Skill_Filter_Type_ID": "Skill ID",
+    "Skill_Filter_Type_Name": "Skill Name",
+    "Font_Master": "Master Font",
+    "Font_Default": "Default Font",
+    "Text_Align_Left": "Left",
+    "Text_Align_Center": "Middle",
+    "Text_Align_Right": "Right",
+    "Text_Curve_Left": "Left",
+    "Text_Curve_Straight": "Straight",
+    "Text_Curve_Right": "Right",
+    "Old_Save_Popup_Title": "Old Save File Version",
+    "Old_Save_Popup_Content": "The found options file was saved with an older version of GW2 SCT.\nSome of your settings may have been reverted to default.",
+    "Old_Save_Popup_Backup_Made": "A backup of your old options save file can be found at:",
+    "Old_Save_Popup_Confirmation": "OK",
+    "Unknown_Skill_Source": "<Area>",
+    "Unknown_Skill_Target": "<Area>",
+    "Unknown_Skill_Name": "<Skill>",
+    "Default_Scroll_Area_Incoming": "Incoming Events",
+    "Default_Scroll_Area_Outgoing": "Outgoing Events"
+  },
+  "Option_UI": {
+    "Title": "SCT Options",
+    "Menu_Bar_General": "General",
+    "Menu_Bar_Scroll_Areas": "Scroll Areas",
+    "Menu_Bar_Profession_Colors": "Profession Colors",
+    "Menu_Bar_Filtered_Skills": "Filtered Skills",
+    "Menu_Bar_Skill_Icons": "Skill Icons",
+    "Menu_Bar_Profiles": "Profiles",
+    "General_Enabled": "SCT enabled",
+    "General_Scrolling_Speed": "Scrolling Speed",
+    "General_Scrolling_Speed_Toolip": "The velocity at which each message is scrolling downwards in pixels per seconds.",
+    "General_Drop_Shadow": "Drop Shadow",
+    "General_Max_Messages": "Maximal Messages in Stack",
+    "General_Max_Messages_Toolip": "Messages that want to appear on screen but there is not enough room for them yet\nremain in a stack. When the size of the stack would exceed this given number all\nmessages will be forced to teleport a bit downwards for a new message to appear.",
+    "General_Combine_Messages": "Combine all Messages",
+    "General_Combine_Messages_Toolip": "If enabled new messages will only be combined with the newest message in the\nstack if possible.\nIf disabled new messages will be combined with any of the messages in stack\nif possible, starting from newest to oldest.",
+    "General_Self_Only_As_Incoming": "Show self messages only as incoming",
+    "General_Self_Only_As_Incoming_Toolip": "This option effects only messages with both the source and destination\nbeing yourself.\nIf enabled these messages will only be triggered as 'Player Incoming'\nmessages.\nIf disabled these messages will be triggered as both 'Player Incoming'\nand 'Player outgoing' messages.",
+    "General_Out_Only_For_Target": "Show outgoing messages only for target",
+    "General_Out_Only_For_Target_Toolip": "If enabled only messages that have your current target as destination will\nbe triggered in both categories 'Player Outgoing' and 'Pet Outgoing'.",
+    "Scroll_Areas_Name": "Scroll Area Name",
+    "Receiver_Name": "Receiver Name",
+    "Messages_Category": "Message Category",
+    "Messages_Category_Player_Out": "Player Outgoing",
+    "Messages_Category_Player_In": "Player Incoming",
+    "Messages_Category_Pet_Out": "Pet Outgoing",
+    "Messages_Category_Pet_In": "Pet Incoming",
+    "Messages_Type": "Message Type",
+    "Messages_Type_Physical": "Physical Hit",
+    "Messages_Type_Crit": "Physical Crit",
+    "Messages_Type_Bleeding": "Bleeding Damage",
+    "Messages_Type_Burning": "Burning Damage",
+    "Messages_Type_Poison": "Poison Damage",
+    "Messages_Type_Confusion": "Confusion Damage",
+    "Messages_Type_Retaliation": "Retaliation Damage",
+    "Messages_Type_Torment": "Torment Damage",
+    "Messages_Type_Dot": "Other Continuous Damage",
+    "Messages_Type_Heal": "Heal",
+    "Messages_Type_Hot": "Heal over Time",
+    "Messages_Type_Shield_Receive": "Shield Created",
+    "Messages_Type_Shield_Remove": "Shielded Damage",
+    "Messages_Type_Block": "Block",
+    "Messages_Type_Evade": "Evade",
+    "Messages_Type_Invulnerable": "Invulnerable",
+    "Messages_Type_Miss": "Miss",
+    "Profession_Colors_Guardian": "Guardian",
+    "Profession_Colors_Warrior": "Warrior",
+    "Profession_Colors_Engineer": "Engineer",
+    "Profession_Colors_Ranger": "Ranger",
+    "Profession_Colors_Thief": "Thief",
+    "Profession_Colors_Elementalist": "Elementalist",
+    "Profession_Colors_Mesmer": "Mesmer",
+    "Profession_Colors_Necromancer": "Necromancer",
+    "Profession_Colors_Revenant": "Revenant",
+    "Profession_Colors_Undetectable": "Undetectable profession"
+  },
+  "Example_Message_UI": {
+    "Title": "Example Messages",
+    "Start_Recording": "Start recording messages",
+    "Stop_Recording": "Stop recording messages",
+    "Start_Emitting": "Start emitting messages",
+    "Stop_Emitting": "Stop emitting messages",
+    "Clear_Recorded_Messages": "Clear all"
+  },
+  "Message": {
+    "Multiple_Sources": "Multiple",
+    "Number_Of_Hits": "Hits"
+  },
+  "Scroll_Area_Option_UI": {
+    "Scroll_Areas_New": "New Scroll Area",
+    "Horizontal_Offset": "Horizontal Offset",
+    "Vertical_Offset": "Vertical Offset",
+    "Width": "Width",
+    "Height": "Height",
+    "Text_Align": "Text Align",
+    "Text_Flow": "Text Flow",
+    "All_Receivers": "Message receivers:",
+    "New_Receiver": "New receiver:",
+    "Delete_Confirmation_Title": "Delete?",
+    "Delete_Confirmation_Content": "Are you sure you want to delete this scroll area?\nAll receivers registered within this scroll area\nwill be deleted aswell.\n\n",
+    "Delete_Confirmation_Confirmation": "OK",
+    "Delete_Confirmation_Cancel": "Cancel"
+  },
+  "Receiver_Option_UI": {
+    "Template": "Template",
+    "Available_Parameters": "Available template parameters",
+    "Delete_Confirmation_Title": "Delete?",
+    "Delete_Confirmation_Content": "Are you sure you want to delete this message receiver?\n\n",
+    "Delete_Confirmation_Confirmation": "OK",
+    "Delete_Confirmation_Cancel": "Cancel"
+  },
+  "Skill_Filter_Option_UI": {
+    "Delete_Confirmation_Title": "Delete?",
+    "Delete_Confirmation_Content": "Are you sure you want to delete this skill id filter?",
+    "Delete_Confirmation_Confirmation": "OK",
+    "Delete_Confirmation_Cancel": "Cancel",
+    "Filter_By": "Filter by"
+  },
+  "Skill_Icons_Option_UI": {
+    "Skill_Icons_Warning": "Warning: Using skill icons will establish an additional connection to the GW2 rendering API. All downloaded icons will be saved in",
+    "Skill_Icons_Enable": "Enable skill icons",
+    "Skill_Icons_Preload_Description": "Preloading skill icons will download every possible skill icon from the GW2 rendering API. This will require ~25MB of free memory space available. If not enabled, icons will be only downloaded as needed.",
+    "Skill_Icons_Preload": "Preload all skill icons",
+    "Skill_Icons_Display_Type": "Transparency",
+    "Skill_Icons_Display_Type_Normal": "None",
+    "Skill_Icons_Display_Type_Black_Culled": "Cull dark pixels",
+    "Skill_Icons_Display_Type_Black_Border_Culled": "Cull border squares of dark pixels",
+    "Skill_Icons_Display_Type_Black_Border_Touching_Culled": "Cull dark pixels touching border or other transparent pixels"
+  },
+  "Profile_Option_UI": {
+    "Delete_Confirmation_Title": "Delete Profile?",
+    "Delete_Confirmation_Content": "Are you sure you want to delete this profile filter? All options set within will be lost.",
+    "Delete_Confirmation_Confirmation": "OK",
+    "Delete_Confirmation_Cancel": "Cancel",
+    "Profile_Description": "Profiles store all your other SCT options and can be quickly changed in this tab. You can either define which profile is used for the in game character you are currently playing or otherwise the profile selectected as master profile will be loaded.",
+    "Master_Profile": "Master Profile",
+    "Character_Specific_Profile_Heading": "Character specific profile:",
+    "Character_Specific_Profile_Enabled": "enable specific profile for ",
+    "Current_Profile_Heading": "Current profile information:",
+    "Current_Profile_Name": "Profile Name",
+    "Create_Profile_Copy": "Create a Copy",
+    "Delete_Profile": "Delete this profile",
+    "Profile_Copy_Suffix": "Copy"
+  },
+  "Message_General": {
+    "Parameter_Description_v": "Amount of damage",
+    "Parameter_Description_n": "Name of the skills target",
+    "Parameter_Description_s": "Skillname",
+    "Parameter_Description_p": "Name of the pet/clone attacking",
+    "Parameter_Description_c": "Color for the skills source profession (use: [col=%c]...[/col])",
+    "Parameter_Description_r": "Profession name of source",
+    "Parameter_Description_i": "Skillicon",
+    "Default_Value": "%v %i"
+  },
+  "Message_Category_Player_In": {
+    "Parameter_Description_n": "Name of the attacker"
+  },
+  "Message_Category_Pet_In": {
+    "Parameter_Description_n": "Name of the attacker",
+    "Parameter_Description_p": "Name of the pet/clone being attacked",
+    "Default_Value": "%i Pet -%v"
+  },
+  "Message_Type_Heal": {
+    "Parameter_Description_v": "Amount of heal",
+    "Default_Value": "+%v %i"
+  },
+  "Message_Type_HoT": {
+    "Parameter_Description_v": "Amount of heal",
+    "Default_Value": "+%v %i"
+  },
+  "Message_Type_Shield_Got": {
+    "Parameter_Description_v": "Amount of shield",
+    "Default_Value": "+%v %i"
+  },
+  "Message_Type_Shield": {
+    "Default_Value": "%v -=absorb=- %i"
+  },
+  "Message_Type_Block": {
+    "Default_Value": "Block! %i"
+  },
+  "Message_Type_Evade": {
+    "Default_Value": "Evade! %i"
+  },
+  "Message_Type_Invulnerable": {
+    "Default_Value": "Invulnerable! %i"
+  },
+  "Message_Type_Miss": {
+    "Default_Value": "Miss! %i"
+  },
+  "Message_Player_In_Physical": {
+    "Default_Value": "%i ([col=%c]%n[/col]) -[col=FFFFFF]%v[/col]"
+  },
+  "Message_Player_In_Crit": {
+    "Default_Value": "%i ([col=%c]%n[/col]) -[col=FFFFFF]%v[/col]"
+  },
+  "Message_Player_In_Bleeding": {
+    "Default_Value": "%i ([col=%c]%n[/col]) -[col=E84B30]%v[/col]"
+  },
+  "Message_Player_In_Burning": {
+    "Default_Value": "%i ([col=%c]%n[/col]) -[col=FF9E32]%v[/col]"
+  },
+  "Message_Player_In_Poison": {
+    "Default_Value": "%i ([col=%c]%n[/col]) -[col=00C400]%v[/col]"
+  },
+  "Message_Player_In_Confusion": {
+    "Default_Value": "%i ([col=%c]%n[/col]) -[col=B243FF]%v[/col]"
+  },
+  "Message_Player_In_Retaliation": {
+    "Default_Value": "%i ([col=%c]%n[/col]) -[col=FFED00]%v[/col]"
+  },
+  "Message_Player_In_Torment": {
+    "Default_Value": "%i ([col=%c]%n[/col]) -[col=24451F]%v[/col]"
+  },
+  "Message_Player_In_DoT": {
+    "Default_Value": "%i ([col=%c]%n[/col]) -[col=45CDFF]%v[/col]"
+  },
+  "Message_Player_In_Heal": {
+    "Parameter_Description_n": "Name of the healing source",
+    "Default_Value": "%i +%v"
+  },
+  "Message_Player_In_HoT": {
+    "Parameter_Description_n": "Name of the healing source",
+    "Default_Value": "%i +%v"
+  },
+  "Message_Player_In_ShieldGot": {
+    "Parameter_Description_n": "Name of the shield source",
+    "Default_Value": "%i +%v"
+  },
+  "Message_Player_In_Shield": {
+    "Default_Value": "%i %v -=absorb=-"
+  },
+  "Message_Player_In_Block": {
+    "Default_Value": "%i Block!"
+  },
+  "Message_Player_In_Evade": {
+    "Default_Value": "%i Evade!"
+  },
+  "Message_Player_In_Invulnerable": {
+    "Default_Value": "%i Invulnerable!"
+  },
+  "Message_Player_In_Miss": {
+    "Default_Value": "%i Miss!"
+  },
+  "Message_Pet_Out_Heal": {
+    "Parameter_Description_v": "Name of the pet/clone healing"
+  },
+  "Message_Pet_Out_HoT": {
+    "Parameter_Description_p": "Name of the pet/clone healing"
+  },
+  "Message_Pet_Out_ShieldGot": {
+    "Parameter_Description_p": "Name of the pet/clone shielding"
+  },
+  "Message_Pet_In_Heal": {
+    "Parameter_Description_n": "Name of the healing source",
+    "Parameter_Description_p": "Name of the pet/clone being healed",
+    "Default_Value": "%i Pet +%v"
+  },
+  "Message_Pet_In_HoT": {
+    "Parameter_Description_n": "Name of the healing source",
+    "Parameter_Description_p": "Name of the pet/clone being healed",
+    "Default_Value": "%i Pet +%v"
+  },
+  "Message_Pet_In_ShieldGot": {
+    "Parameter_Description_n": "Name of the shield source",
+    "Parameter_Description_p": "Name of the pet/clone being shielded",
+    "Default_Value": "%i Pet +%v"
+  },
+  "Message_Pet_In_Shield": {
+    "Default_Value": "%i Pet %v -=absorb=-"
+  },
+  "Message_Pet_In_Block": {
+    "Default_Value": "%i Pet Block!"
+  },
+  "Message_Pet_In_Evade": {
+    "Default_Value": "%i Pet Evade!"
+  },
+  "Message_Pet_In_Invulnerable": {
+    "Default_Value": "%i Pet Invulnerable!"
+  },
+  "Message_Pet_In_Miss": {
+    "Default_Value": "%i Pet Miss!"
+  }
+}

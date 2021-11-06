@@ -5,6 +5,8 @@ Here you can find all language strings added for any given version if you want t
 ## Version History
 
 * 2.0-RC3
+	* switched to json file format
+	* all categories containing message parameter descriptions or default templates were renamed and any of their keys can now be omitted, if a key is omitted this way its value is first searched in the definitions for the according message type, then message catagory and then general options (e.g. `[Message_Pet_Out_Heal] -> Parameter_Description_s` will take the first value of `[Message_Type_Heal] -> Parameter_Description_s`, `[Message_Category_Pet_Out] -> Parameter_Description_s` or `[Message_General] -> Parameter_Description_s`)
 	* Added:
 		* `[Option_UI] -> Menu_Bar_Profiles`
 		* `[Profile_Option_UI] -> Delete_Confirmation_Title`
