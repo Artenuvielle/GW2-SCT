@@ -21,6 +21,8 @@ Translations can be found on this repository in the according language folder. I
 
 Translations available and authors:
 * english (complete for 2.0-RC3, [Artenuvielle](https://github.com/Artenuvielle))
+
+Available translations and authors prior to version 2.0-RC3:
 * chinese (only complete for 1.1-RC3, [jiangyi0923](https://github.com/jiangyi0923))
 * french (only complete for 1.2-RC3, [livarkhal](https://github.com/livarkhal))
 
@@ -36,7 +38,7 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
-* 2.0-RC3 (WIP)
+* 2.0-RC3
 	* profile system (have multiple profiles of setting to quickly switch between and also have character bound profiles)
 	* transparency option for skill icons
 	* recording and playback of messages for easier option adjustment
