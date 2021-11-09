@@ -160,31 +160,23 @@ ImVec2 GW2_SCT::FontType::calcRequiredSpaceForTextAtSize(std::string text, float
     return ImVec2(ceil(x), ceil(fontSize));
 }
 
-std::string removeDuplicate(std::string str) {
-    std::string result = "";
-    for (int i = 0; i < str.size(); i++) {
-
-        // Check if str[i] is present before it   
-        int j;
-        for (j = 0; j < i; j++)
-            if (str[i] == str[j])
-                break;
-
-        if (j == i)
-            result += str[i];
+std::vector<int> getCodepointsWithoutDuplicates(std::string str) {
+    std::vector<int> codePointsWithoutDuplicates;
+    int i;
+    for (i = 0; i < str.size();) {
+        int codePointLength = getCodepointLength(str, i);
+        int codePoint = getCodepointOfLength(str, i, codePointLength);
+        if (std::find(codePointsWithoutDuplicates.begin(), codePointsWithoutDuplicates.end(), codePoint) == codePointsWithoutDuplicates.end())
+            codePointsWithoutDuplicates.push_back(codePoint);
+        i += codePointLength;
     }
-
-    return result;
+    return codePointsWithoutDuplicates;
 }
 
 void GW2_SCT::FontType::bakeGlyphsAtSize(std::string text, float fontSize) {
     float scale = getCachedScale(fontSize);
-    std::string textWithoutDuplicates = removeDuplicate(text);
-    int i;
-    for (i = 0; i < textWithoutDuplicates.size();) {
-        int codePointLength = getCodepointLength(textWithoutDuplicates, i);
-        int codePoint = getCodepointOfLength(textWithoutDuplicates, i, codePointLength);
-        i += codePointLength;
+    std::vector<int> codepointsWithoutDuplicates = getCodepointsWithoutDuplicates(text);
+    for (const auto& codePoint : codepointsWithoutDuplicates) {
         if (_glyphPositionsAtSizes[scale].find(codePoint) == _glyphPositionsAtSizes[scale].end()) {
             Glyph* glyph = Glyph::GetGlyph(&_info, scale, codePoint, _ascent);
             size_t atlasId = 0;
