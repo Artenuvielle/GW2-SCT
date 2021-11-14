@@ -82,6 +82,7 @@ bool GW2_SCT::TemplateInterpreter::validate(std::string t, std::map<char, std::s
 					it++;
 				}
 				if (it == t.end()) return false;
+				if (currentCommands.empty()) return false;
 				if (tempText.compare(currentCommands.back()) != 0) return false;
 				currentCommands.pop_back();
 				if (tempText == "col") {
@@ -181,6 +182,7 @@ std::vector<GW2_SCT::TemplateInterpreter::InterpretedText> GW2_SCT::TemplateInte
 					it++;
 				}
 				if (it == t.end()) return emptyInterpreted;
+				if (currentCommands.empty()) return emptyInterpreted;
 				if (tempText.compare(currentCommands.back()) != 0) return emptyInterpreted;
 				currentCommands.pop_back();
 				if (tempText == "col") {
