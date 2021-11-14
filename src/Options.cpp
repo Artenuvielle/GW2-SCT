@@ -269,11 +269,7 @@ bool stob(std::string const& s) {
 void GW2_SCT::Options::save() {
 	std::ofstream out((getSCTPath() + "sct.json").c_str());
 	nlohmann::json j = options;
-#if _DEBUG
-	out << j.dump(4);
-#else
-	out << j;
-#endif
+	out << j.dump(2);
 	out.close();
 }
 
