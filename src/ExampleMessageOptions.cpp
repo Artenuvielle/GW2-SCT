@@ -34,10 +34,10 @@ std::multimap<std::chrono::system_clock::duration, GW2_SCT::ExampleMessageOption
 	{ std::chrono::system_clock::duration(0ms), { GW2_SCT::MessageCategory::PLAYER_OUT, GW2_SCT::MessageType::PHYSICAL, std::make_shared<GW2_SCT::MessageData>(-1234, 0, 0, 5489, &agMe, &agFoe, "Lightning Whip")}},
 	{ std::chrono::system_clock::duration(100ms), { GW2_SCT::MessageCategory::PLAYER_OUT, GW2_SCT::MessageType::CRIT, std::make_shared<GW2_SCT::MessageData>(-1855, 0, 0, 5489, &agMe, &agFoe, "Lightning Whip")}},
 	{ std::chrono::system_clock::duration(0ms), { GW2_SCT::MessageCategory::PLAYER_IN, GW2_SCT::MessageType::PHYSICAL, std::make_shared<GW2_SCT::MessageData>(-123, 0, 0, 5827, &agFoe, &agMe, "Fragmentation Shot")}},
-	{ std::chrono::system_clock::duration(250ms), { GW2_SCT::MessageCategory::PLAYER_IN, GW2_SCT::MessageType::BLEEDING, std::make_shared<GW2_SCT::MessageData>(0, -789, 0, 5489, &agFoe, &agMe, "Fragmentation Shot")}},
-	{ std::chrono::system_clock::duration(500ms), { GW2_SCT::MessageCategory::PLAYER_IN, GW2_SCT::MessageType::BLEEDING, std::make_shared<GW2_SCT::MessageData>(0, -789, 0, 5489, &agFoe, &agMe, "Fragmentation Shot")}},
-	{ std::chrono::system_clock::duration(750ms), { GW2_SCT::MessageCategory::PLAYER_IN, GW2_SCT::MessageType::BLEEDING, std::make_shared<GW2_SCT::MessageData>(0, -456, 0, 5489, &agFoe, &agMe, "Fragmentation Shot")}},
-	{ std::chrono::system_clock::duration(1000ms), { GW2_SCT::MessageCategory::PLAYER_IN, GW2_SCT::MessageType::BLEEDING, std::make_shared<GW2_SCT::MessageData>(0, -34, 0, 5489, &agFoe, &agMe, "Fragmentation Shot")}}
+	{ std::chrono::system_clock::duration(250ms), { GW2_SCT::MessageCategory::PLAYER_IN, GW2_SCT::MessageType::BLEEDING, std::make_shared<GW2_SCT::MessageData>(0, -789, 0, 736, &agFoe, &agMe, "Fragmentation Shot")}},
+	{ std::chrono::system_clock::duration(500ms), { GW2_SCT::MessageCategory::PLAYER_IN, GW2_SCT::MessageType::BLEEDING, std::make_shared<GW2_SCT::MessageData>(0, -789, 0, 736, &agFoe, &agMe, "Fragmentation Shot")}},
+	{ std::chrono::system_clock::duration(750ms), { GW2_SCT::MessageCategory::PLAYER_IN, GW2_SCT::MessageType::BLEEDING, std::make_shared<GW2_SCT::MessageData>(0, -456, 0, 736, &agFoe, &agMe, "Fragmentation Shot")}},
+	{ std::chrono::system_clock::duration(1000ms), { GW2_SCT::MessageCategory::PLAYER_IN, GW2_SCT::MessageType::BLEEDING, std::make_shared<GW2_SCT::MessageData>(0, -34, 0, 736, &agFoe, &agMe, "Fragmentation Shot")}}
 #endif // _DEBUG
 };
 

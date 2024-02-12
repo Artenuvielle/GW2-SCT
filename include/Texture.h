@@ -14,6 +14,7 @@ namespace GW2_SCT {
 		Texture(int width, int height);
 		void draw(ImVec2 pos, ImVec2 size, ImU32 color);
 		void draw(ImVec2 pos, ImVec2 size, ImVec2 uvStart, ImVec2 uvEnd, ImU32 color);
+		virtual bool canDraw() = 0;
 		virtual void internalDraw(ImVec2 pos, ImVec2 size, ImVec2 uvStart, ImVec2 uvEnd, ImU32 color) = 0;
 	protected:
 		int _textureWidth;
@@ -24,6 +25,7 @@ namespace GW2_SCT {
 	public:
 		static ImmutableTexture* Create(int width, int height, unsigned char* data);
 		static void Release(ImmutableTexture*);
+		bool canDraw() override;
 		ImmutableTexture(int width, int height);
 	};
 
@@ -38,35 +40,13 @@ namespace GW2_SCT {
 		static MutableTexture* Create(int width, int height);
 		static void Release(MutableTexture*);
 		MutableTexture(int width, int height);
+		bool canDraw() override;
 		bool startUpdate(ImVec2 pos, ImVec2 size, UpdateData* out);
 		bool endUpdate();
 		virtual bool internalStartUpdate(ImVec2 pos, ImVec2 size, UpdateData* out) = 0;
 		virtual bool internalEndUpdate() = 0;
 	private:
 		bool _isCurrentlyUpdating = false;
-	};
-
-	class TextureD3D9 : protected virtual CreatedTexture {
-	public:
-		TextureD3D9(int width, int height, unsigned char* data);
-		~TextureD3D9();
-	protected:
-		LPDIRECT3DTEXTURE9 _texture9 = nullptr;
-	};
-	class ImmutableTextureD3D9 : public ImmutableTexture, public TextureD3D9 {
-	public:
-		ImmutableTextureD3D9(int width, int height, unsigned char* data);
-	protected:
-		void internalDraw(ImVec2 pos, ImVec2 size, ImVec2 uvStart, ImVec2 uvEnd, ImU32 color) override;
-	};
-
-	class MutableTextureD3D9 : public MutableTexture, public TextureD3D9 {
-	public:
-		MutableTextureD3D9(int width, int height);
-	protected:
-		void internalDraw(ImVec2 pos, ImVec2 size, ImVec2 uvStart, ImVec2 uvEnd, ImU32 color) override;
-		bool internalStartUpdate(ImVec2 pos, ImVec2 size, UpdateData* out) override;
-		bool internalEndUpdate() override;
 	};
 
 	class TextureD3D11 : protected virtual CreatedTexture {

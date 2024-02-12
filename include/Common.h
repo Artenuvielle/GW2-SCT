@@ -130,7 +130,7 @@ typedef struct cbtevent {
 	uint8_t is_shields; /* all or partial damage was vs barrier/shield */
 	uint8_t is_offcycle; /* zero if buff dmg happened during tick, non-zero otherwise */
 	uint8_t pad64; /* internal tracking. garbage */
-} cbtevent;
+};
 
 /* combat event - for logging (revision 1, when byte16 == 1) */
 typedef struct cbtevent1 {
@@ -161,7 +161,7 @@ typedef struct cbtevent1 {
 	uint8_t pad62;
 	uint8_t pad63;
 	uint8_t pad64;
-} cbtevent1;
+};
 
 /* combat result (physical) */
 enum cbtresult {
@@ -209,7 +209,6 @@ enum profession {
 
 namespace GW2_SCT {
 	extern uint32_t d3dversion;
-	extern IDirect3DDevice9* d3Device9;
 	extern ID3D11Device* d3Device11;
 	extern ID3D11DeviceContext* d3D11Context;
 	extern IDXGISwapChain* d3d11SwapChain;

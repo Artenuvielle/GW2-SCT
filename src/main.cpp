@@ -7,13 +7,12 @@
 #include <locale>
 #include <codecvt>
 #include <stdio.h>
-#include <d3d9.h>
 #include <d3d11.h>
 #include "SCTMain.h"
 #include <iostream>
 #include "Language.h"
+#include "imgui_sct_widgets.h"
 
-#pragma comment(lib, "d3dx9")
 #pragma comment(lib, "d3d11")
 
 /* proto/globals */
@@ -31,6 +30,7 @@ uintptr_t mod_imgui();
 uintptr_t mod_options();
 
 GW2_SCT::SCTMain* sct;
+bool isArcdpsOutdated = false;
 
 /* dll main -- winapi */
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ulReasonForCall, LPVOID lpReserved) {
@@ -62,9 +62,14 @@ extern "C" __declspec(dllexport) void* get_init_addr(char* arcversion, ImGuiCont
 	ImGui::SetCurrentContext((ImGuiContext*)imguictx);
 	ImGui::SetAllocatorFunctions((void *(*)(size_t, void*))mallocfn, (void(*)(void*, void*))freefn); // on imgui 1.80+
 	GW2_SCT::d3dversion = d3dversion;
-	if (d3dversion == 9) {
-		GW2_SCT::d3Device9 = (IDirect3DDevice9*)id3dptr;
-	} else if (d3dversion == 11) {
+
+	std::string arcversString(arcvers);
+	arcversString = arcversString.substr(0, arcversString.find_first_of('.'));
+	std::string arcreqString(ARC_VERSION_REQUIRED);
+	arcreqString = arcreqString.substr(0, arcreqString.find_first_of('.'));
+	isArcdpsOutdated = arcversString.compare(arcreqString) < 0;
+	
+	if (d3dversion == 11) {
 		GW2_SCT::d3d11SwapChain = (IDXGISwapChain*)id3dptr;
 		ID3D11Device* d3Device11;
 		((IDXGISwapChain*)id3dptr)->GetDevice(__uuidof(ID3D11Device), (void**)&d3Device11);
@@ -84,18 +89,11 @@ extern "C" __declspec(dllexport) void* get_release_addr() {
 	return mod_release;
 }
 
-bool isArcdpsOutdated = false;
-
 arcdps_exports* mod_init() {
 #ifdef _DEBUG
 	//AllocConsole();
 	debug_console_hnd = GetStdHandle(STD_OUTPUT_HANDLE);
 #endif
-	std::string arcversString(arcvers);
-	arcversString = arcversString.substr(0, arcversString.find_first_of('.'));
-	std::string arcreqString(ARC_VERSION_REQUIRED);
-	arcreqString = arcreqString.substr(0, arcreqString.find_first_of('.'));
-	isArcdpsOutdated = arcversString.compare(arcreqString) < 0;
 	arcdps_exports* ret = sct->Init(arcvers, mod_wnd, mod_combat_area, mod_imgui, mod_options, mod_combat_local);
 	LOG("Running arcvers: ", arcvers);
 	LOG("Running sct version: ", SCT_VERSION_STRING, " / ", __DATE__, " / ", __TIME__);
@@ -112,6 +110,7 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 }
 
 uintptr_t mod_imgui() {
+	if (!ImGui::HasWindow()) return 0;
 	if (isArcdpsOutdated) {
 		ImGui::OpenPopup(langStringG(GW2_SCT::LanguageKey::Outdated_Popup_Title));
 	}

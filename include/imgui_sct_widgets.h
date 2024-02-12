@@ -46,4 +46,6 @@ namespace ImGui {
 
 	void BeginDisabled();
 	void EndDisabled();
+
+	bool HasWindow();
 }

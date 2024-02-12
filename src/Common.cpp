@@ -7,7 +7,6 @@ HANDLE debug_console_hnd;
 #endif
 
 uint32_t GW2_SCT::d3dversion;
-IDirect3DDevice9* GW2_SCT::d3Device9;
 ID3D11Device* GW2_SCT::d3Device11;
 ID3D11DeviceContext* GW2_SCT::d3D11Context;
 IDXGISwapChain* GW2_SCT::d3d11SwapChain;

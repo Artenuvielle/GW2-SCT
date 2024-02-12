@@ -400,8 +400,6 @@ void GW2_SCT::FontManager::init() {
 	std::vector<std::string> fontFiles = std::vector<std::string>();
 	std::string addonPath = getSCTPath();
 
-	logFile = std::ofstream(addonPath + "sct.log");
-
 	std::string fontsDirectory = addonPath + "fonts\\";
 	CreateDirectory(fontsDirectory.c_str(), NULL);
 

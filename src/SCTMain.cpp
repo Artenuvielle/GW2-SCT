@@ -22,11 +22,14 @@ float windowHeight;
 GW2_SCT::SCTMain::SCTMain() {}
 
 GW2_SCT::SCTMain::~SCTMain() {
+	this->Release();
 	Options::save();
 	FontManager::cleanup();
 }
 
 arcdps_exports* GW2_SCT::SCTMain::Init(char* arcvers, void* mod_wnd, void* mod_combat, void* mod_imgui, void* mod_options, void* mod_combat_local) {
+	logFile = std::ofstream(getSCTPath() + "sct.log");
+
 	Options::profile.onAssign([=](std::shared_ptr<profile_options_struct> oldProfile, std::shared_ptr<profile_options_struct> newProfile) {
 		if (currentScrollAreaPushBackCallbackId >= 0) {
 			oldProfile->scrollAreaOptions.removeOnEraseCallback(currentScrollAreaPushBackCallbackId);
@@ -42,26 +45,12 @@ arcdps_exports* GW2_SCT::SCTMain::Init(char* arcvers, void* mod_wnd, void* mod_c
 		});
 	});
 	SkillIconManager::init();
-
 	FontManager::init();
 	Options::load();
 	for (const auto& scrollAreaOptions : Options::get()->scrollAreaOptions)
 		scrollAreas.push_back(std::make_shared<ScrollArea>(scrollAreaOptions));
 
-	
-
-	if (d3Device9 != nullptr) {
-		LOG("Found d3d9 device.");
-		D3DDEVICE_CREATION_PARAMETERS parameters;
-		if (SUCCEEDED(d3Device9->GetCreationParameters(&parameters))) {
-			RECT rect;
-			if (GetWindowRect(parameters.hFocusWindow, &rect)) {
-				windowWidth = rect.right - rect.left;
-				windowHeight = rect.bottom - rect.top;
-			}
-		}
-	}
-	else if (d3Device11 != nullptr) {
+	if (d3Device11 != nullptr) {
 		if (d3d11SwapChain != nullptr) {
 			DXGI_SWAP_CHAIN_DESC desc;
 			if (SUCCEEDED(d3d11SwapChain->GetDesc(&desc))) {

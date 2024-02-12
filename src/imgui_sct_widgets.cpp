@@ -334,3 +334,9 @@ void ImGui::EndDisabled() {
 	ImGui::PopStyleColor();
 	ImGui::PopItemFlag();
 }
+
+bool ImGui::HasWindow() {
+	if (GImGui == nullptr) return false;
+	ImGuiWindow* window = GetCurrentWindowRead();
+	return window != nullptr;
+}
