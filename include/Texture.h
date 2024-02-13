@@ -1,6 +1,6 @@
 #pragma once
 #include "imgui.h"
-#include <D3dx9tex.h>
+#include <mutex>
 #include <D3dx11tex.h>
 
 namespace GW2_SCT {
@@ -75,5 +75,6 @@ namespace GW2_SCT {
 	private:
 		ID3D11Texture2D* _texture11Staging = nullptr;
 		bool _stagingChanged = false;
+		std::mutex _stagingMutex;
 	};
 }

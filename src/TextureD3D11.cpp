@@ -90,6 +90,7 @@ GW2_SCT::MutableTextureD3D11::~MutableTextureD3D11() {
 
 void GW2_SCT::MutableTextureD3D11::internalDraw(ImVec2 pos, ImVec2 size, ImVec2 uvStart, ImVec2 uvEnd, ImU32 color) {
     if (_stagingChanged && d3D11Context != nullptr) {
+        std::lock_guard lock(_stagingMutex);
         d3D11Context->CopyResource(_texture11, _texture11Staging);
         _stagingChanged = false;
     }
@@ -101,6 +102,7 @@ bool GW2_SCT::MutableTextureD3D11::internalStartUpdate(ImVec2 pos, ImVec2 size, 
 
     HRESULT res;
     D3D11_MAPPED_SUBRESOURCE mapped;
+    std::lock_guard lock(_stagingMutex);
     if (FAILED(res = d3D11Context->Map(_texture11Staging, 0, D3D11_MAP_READ_WRITE, 0, &mapped))) {
         LOG("Could not map staging texture.", std::to_string(res));;
         return false;
