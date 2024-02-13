@@ -20,7 +20,7 @@ If for some reason the addon is not loading for you, check that you have the new
 Translations can be found on this repository in the according language folder. If you have a translations for a new language or improvements for one, get in touch with me.
 
 Translations available and authors:
-* english (complete for 2.0-RC3, [Artenuvielle](https://github.com/Artenuvielle))
+* english (complete for 2.0-RC4, [Artenuvielle](https://github.com/Artenuvielle))
 
 Available translations and authors prior to version 2.0-RC3:
 * chinese (only complete for 1.1-RC3, [jiangyi0923](https://github.com/jiangyi0923))
@@ -38,6 +38,9 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 2.0-RC4
+	* removed d3d9 support (game doesn't use d3d9 renderer anymore)
+	* changes to improve stability when creating and updating d3d11 textures
 * 2.0-RC3
 	* profile system (have multiple profiles of setting to quickly switch between and also have character bound profiles)
 	* transparency option for skill icons
