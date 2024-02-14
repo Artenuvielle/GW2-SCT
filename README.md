@@ -38,6 +38,9 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 2.0-RC5
+	* moved texture creation into imgui callback to resolve issues with crashing
+	* creating font atlases in advance to improve loading time
 * 2.0-RC4
 	* removed d3d9 support (game doesn't use d3d9 renderer anymore)
 	* changes to improve stability when creating and updating d3d11 textures
