@@ -37,6 +37,7 @@ namespace GW2_SCT {
 	class FontType {
 	public:
 		FontType(unsigned char* data, size_t size);
+		static void ensureAtlasCreation();
 		static void cleanup();
 		ImVec2 calcRequiredSpaceForTextAtSize(std::string text, float fontSize);
 		void bakeGlyphsAtSize(std::string text, float fontSize);

@@ -982,7 +982,7 @@ const nlohmann::ordered_json GW2_SCT::Language::defaultLanguage = convertLanguag
         { GW2_SCT::LanguageKey::Profession_Colors_Undetectable, "Undetectable profession" },
     } },
     { GW2_SCT::LanguageCategory::Example_Message_UI, {
-        { GW2_SCT::LanguageKey::Title, "Example Messages" },
+        { GW2_SCT::LanguageKey::Title, "SCT Example Messages" },
         { GW2_SCT::LanguageKey::Start_Recording, "Start recording messages" },
         { GW2_SCT::LanguageKey::Stop_Recording, "Stop recording messages" },
         { GW2_SCT::LanguageKey::Start_Emitting, "Start emitting messages" },

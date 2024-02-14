@@ -380,6 +380,7 @@ uintptr_t GW2_SCT::SCTMain::UIUpdate() {
 #if _DEBUG
 	auto start_time = std::chrono::high_resolution_clock::now();
 #endif
+	FontType::ensureAtlasCreation();
 	Options::paint();
 	ExampleMessageOptions::paint();
 	if (Options::get()->sctEnabled) {

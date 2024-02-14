@@ -114,6 +114,19 @@ GW2_SCT::FontType::FontType(unsigned char* data, size_t size) {
     stbtt_GetFontVMetrics(&_info, &_ascent, &_descent, &_lineGap);
 }
 
+void GW2_SCT::FontType::ensureAtlasCreation() {
+    size_t atlasId = 0;
+    while (atlasId < _allocatedAtlases.size()) {
+        _allocatedAtlases[atlasId]->texture->ensureCreation();
+        atlasId++;
+    }
+    if (_allocatedAtlases.size() == 0 || _allocatedAtlases.back()->linesWithSpaces.size() > 0) {
+        LOG("Creating atlas with id ", atlasId, " in advance")
+        GlyphAtlas* atlas = new GlyphAtlas();
+        _allocatedAtlases.push_back(atlas);
+    }
+}
+
 void GW2_SCT::FontType::cleanup() {
     for (auto atlas : _allocatedAtlases) {
         delete atlas;
@@ -193,7 +206,13 @@ void GW2_SCT::FontType::bakeGlyphsAtSize(std::string text, float fontSize) {
                     }
                 }
                 if (!positionFound) {
-                    float nextYAfterLastLine = _allocatedAtlases[atlasId]->linesWithSpaces.back().nextGlyphPosition.y + _allocatedAtlases[atlasId]->linesWithSpaces.back().lineHeight;
+                    float nextYAfterLastLine;
+                    if (_allocatedAtlases[atlasId]->linesWithSpaces.size() == 0) {
+                        nextYAfterLastLine = 0;
+                    } else {
+                        auto lastLine = _allocatedAtlases[atlasId]->linesWithSpaces.back();
+                        nextYAfterLastLine = lastLine.nextGlyphPosition.y + lastLine.lineHeight;
+                    }
                     if (nextYAfterLastLine + fontSize < FONT_TEXTURE_SIZE) {
                         positionFound = true;
                         _allocatedAtlases[atlasId]->linesWithSpaces.push_back({ fontSize, ImVec2(glyph->getWidth(), nextYAfterLastLine) });
