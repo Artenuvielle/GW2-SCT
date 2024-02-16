@@ -22,8 +22,7 @@ void GW2_SCT::ScrollArea::receiveMessage(std::shared_ptr<EventMessage> m) {
 							return;
 						}
 					}
-				}
-				else {
+				} else {
 					std::shared_ptr<MessagePrerender> backMessage = messageQueue.back();
 					if (backMessage->message->tryToCombineWith(m) && backMessage->options == receiver) {
 						backMessage->update();

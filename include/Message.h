@@ -29,11 +29,11 @@ namespace GW2_SCT {
 	};
 
 	struct MessageHandler {
-		std::vector<std::function<bool(std::vector<std::shared_ptr<MessageData>>, std::vector<std::shared_ptr<MessageData>>)>> tryToCombineWithFunctions;
-		std::map<char, std::function<std::string(std::vector<std::shared_ptr<MessageData>>)>> parameterToStringFunctions;
+		std::vector<std::function<bool(std::vector<MessageData*>, std::vector<MessageData*>)>> tryToCombineWithFunctions;
+		std::map<char, std::function<std::string(std::vector<MessageData*>)>> parameterToStringFunctions;
 		MessageHandler(
-			std::vector<std::function<bool(std::vector<std::shared_ptr<MessageData>>, std::vector<std::shared_ptr<MessageData>>)>> tryToCombineWithFunctions,
-			std::map<char, std::function<std::string(std::vector<std::shared_ptr<MessageData>>)>> parameterToStringFunctions
+			std::vector<std::function<bool(std::vector<MessageData*>, std::vector<MessageData*>)>> tryToCombineWithFunctions,
+			std::map<char, std::function<std::string(std::vector<MessageData*>)>> parameterToStringFunctions
 		);
 	};
 
@@ -42,6 +42,7 @@ namespace GW2_SCT {
 		EventMessage(MessageCategory category, MessageType type, cbtevent* ev, ag* src, ag* dst, char* skillname);
 		EventMessage(MessageCategory category, MessageType type, cbtevent1* ev, ag* src, ag* dst, char* skillname);
 		EventMessage(MessageCategory category, MessageType type, std::shared_ptr<MessageData>);
+		~EventMessage();
 		std::string getStringForOptions(std::shared_ptr<message_receiver_options_struct> opt);
 		std::shared_ptr<MessageData> getCopyOfFirstData();
 		MessageCategory getCategory();
@@ -51,7 +52,7 @@ namespace GW2_SCT {
 	private:
 		MessageCategory category;
 		MessageType type;
-		std::vector<std::shared_ptr<MessageData>> messageDatas;
+		std::vector<MessageData*> messageDatas;
 		static std::map<MessageCategory, std::map<MessageType, MessageHandler>> messageHandlers;
 	};
 }

@@ -5,15 +5,10 @@
 #include "json.hpp"
 
 template <class T>
-class ObservableVector : public std::vector<T>
-{
+class ObservableVector : public std::vector<T> {
 public:
-
-    ObservableVector()
-    {}
-
-    ~ObservableVector()
-    {}
+    ObservableVector() {}
+    ~ObservableVector() {}
 
     long addOnEraseCallback(std::function<void(int)> callback) {
         onEraseCallbacks.insert(std::pair<long, std::function<void(int)>>(nextEraseCallbacksIndex, callback));

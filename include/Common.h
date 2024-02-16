@@ -1,6 +1,6 @@
 #pragma once
 
-#define SCT_VERSION_STRING "2.0c"
+#define SCT_VERSION_STRING "2.0d"
 #define ARC_VERSION_REQUIRED "20211026.203453-403-x64"
 #define langStringG(KEY) GW2_SCT::Language::get(KEY)
 #define langString(SECTION, KEY) GW2_SCT::Language::get(SECTION, KEY)

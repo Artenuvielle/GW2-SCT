@@ -40,6 +40,7 @@ CMakeCache.txt
 CMakeFiles
 Debug
 Release
+RelWithDebInfo
 *.bat
 *.sln
 cmake_install.cmake

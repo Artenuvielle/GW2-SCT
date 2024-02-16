@@ -275,7 +275,7 @@ void GW2_SCT::FontType::drawAtSize(std::string text, float fontSize, ImVec2 pos,
     }
     if (definitions.size() == 0) return;
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    ImVec2 currentPos(pos.x - definitions[0]->glyph->getLeftSideBearing(), pos.y);
+    ImVec2 currentPos(pos.x - definitions.front()->glyph->getLeftSideBearing(), pos.y);
     if (isCachedScaleExactForSize(fontSize)) {
         for (size_t i = 0; i < definitions.size(); i++) {
             GlyphPositionDefinition* def = definitions[i];

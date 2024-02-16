@@ -29,13 +29,15 @@ GW2_SCT::SCTMain::~SCTMain() {
 
 arcdps_exports* GW2_SCT::SCTMain::Init(char* arcvers, void* mod_wnd, void* mod_combat, void* mod_imgui, void* mod_options, void* mod_combat_local) {
 	logFile = std::ofstream(getSCTPath() + "sct.log");
+	LOG("Running arcvers: ", arcvers);
+	LOG("Running sct version: ", SCT_VERSION_STRING, " / ", __DATE__, " / ", __TIME__);
 
 	Options::profile.onAssign([=](std::shared_ptr<profile_options_struct> oldProfile, std::shared_ptr<profile_options_struct> newProfile) {
 		if (currentScrollAreaPushBackCallbackId >= 0) {
-			oldProfile->scrollAreaOptions.removeOnEraseCallback(currentScrollAreaPushBackCallbackId);
+			oldProfile->scrollAreaOptions.removeOnPushBackCallback(currentScrollAreaPushBackCallbackId);
 		}
 		if (currentScrollAreaEraseCallbackId >= 0) {
-			oldProfile->scrollAreaOptions.removeOnPushBackCallback(currentScrollAreaEraseCallbackId);
+			oldProfile->scrollAreaOptions.removeOnEraseCallback(currentScrollAreaEraseCallbackId);
 		}
 		currentScrollAreaPushBackCallbackId = newProfile->scrollAreaOptions.addOnPushBackCallback([=](const std::shared_ptr<scroll_area_options_struct>& newVal) {
 			scrollAreas.push_back(std::make_shared<ScrollArea>(newVal));
@@ -44,11 +46,16 @@ arcdps_exports* GW2_SCT::SCTMain::Init(char* arcvers, void* mod_wnd, void* mod_c
 			scrollAreas.erase(std::begin(scrollAreas) + pos);
 		});
 	});
+	LOG("Set up options changing hook");
 	SkillIconManager::init();
+	LOG("Started skill icon manager");
 	FontManager::init();
+	LOG("Started font manager");
 	Options::load();
+	LOG("Loaded options");
 	for (const auto& scrollAreaOptions : Options::get()->scrollAreaOptions)
 		scrollAreas.push_back(std::make_shared<ScrollArea>(scrollAreaOptions));
+	LOG("Created ", Options::get()->scrollAreaOptions.size(), " scroll areas");
 
 	if (d3Device11 != nullptr) {
 		if (d3d11SwapChain != nullptr) {
@@ -64,18 +71,16 @@ arcdps_exports* GW2_SCT::SCTMain::Init(char* arcvers, void* mod_wnd, void* mod_c
 		LOG("Found d3d11 device.");
 		if (d3D11Context != nullptr) {
 			LOG("Found d3d11 context aswell.");
-		}
-		else {
+		} else {
 			LOG("But found no d3d11 context.");
 		}
-	}
-	else {
+	} else {
 		LOG("Found no d3 device (version: ", d3dversion, ")!");
 	}
 
 	std::string remapJsonFilename = getSCTPath() + "remap.json";
 	if (file_exist(remapJsonFilename)) {
-		LOG("Loading skill.json");
+		LOG("Loading remap.json");
 		std::string line, text;
 		std::ifstream in(remapJsonFilename);
 		while (std::getline(in, line)) {
@@ -101,6 +106,7 @@ arcdps_exports* GW2_SCT::SCTMain::Init(char* arcvers, void* mod_wnd, void* mod_c
 				}
 				skillRemaps[from] = to;
 			}
+			LOG("Loaded remap.json successfully: ", skillRemaps.size(), " remapped skills")
 		}
 		catch (std::exception& e) {
 			LOG("Error parsing remap.json");

@@ -24,8 +24,7 @@ std::string getExePath() {
 	return std::string(buffer).substr(0, pos);
 }
 
-std::string getSCTPath()
-{
+std::string getSCTPath() {
 	std::string addonPath = getExePath() + "\\addons\\sct\\";
 	if (!ensuredSCTDirectoryExists) {
 		std::string addonPath = getExePath() + "\\addons\\";

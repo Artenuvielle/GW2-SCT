@@ -3,13 +3,13 @@
 #include <sstream>
 #include "Language.h"
 
-#define COMBINE_FUNCTION(NAME) std::function<bool(std::vector<std::shared_ptr<MessageData>>, std::vector<std::shared_ptr<MessageData>>)> NAME = [](std::vector<std::shared_ptr<MessageData>> srcData, std::vector<std::shared_ptr<MessageData>> targetData)
-#define PARAMETER_FUNCTION(NAME) std::function<std::string(std::vector<std::shared_ptr<MessageData>>)> NAME = [](std::vector<std::shared_ptr<MessageData>> data)
+#define COMBINE_FUNCTION(NAME) std::function<bool(std::vector<MessageData*>, std::vector<MessageData*>)> NAME = [](std::vector<MessageData*> srcData, std::vector<MessageData*> targetData)
+#define PARAMETER_FUNCTION(NAME) std::function<std::string(std::vector<MessageData*>)> NAME = [](std::vector<MessageData*> data)
 
 namespace GW2_SCT {
 	COMBINE_FUNCTION(combineFunctionSkillId) {
-		if (srcData.begin() != srcData.end() && targetData.begin() != targetData.end()) {
-			if ((*(srcData.begin()))->skillId == (*(targetData.begin()))->skillId) {
+		if (!srcData.empty() && !targetData.empty()) {
+			if (srcData.front()->skillId == targetData.front()->skillId) {
 				return true;
 			}
 		}
@@ -17,8 +17,8 @@ namespace GW2_SCT {
 	};
 
 	COMBINE_FUNCTION(combineFunctionEntityId) {
-		if (srcData.begin() != srcData.end() && targetData.begin() != targetData.end()) {
-			if ((*(srcData.begin()))->entityId == (*(targetData.begin()))->entityId) {
+		if (!srcData.empty() > 0 && !targetData.empty() > 0) {
+			if (srcData.front()->entityId == targetData.front()->entityId) {
 				return true;
 			}
 		}
@@ -26,8 +26,8 @@ namespace GW2_SCT {
 	};
 
 	COMBINE_FUNCTION(combineFunctionOtherEntityId) {
-		if (srcData.begin() != srcData.end() && targetData.begin() != targetData.end()) {
-			if ((*(srcData.begin()))->otherEntityId == (*(targetData.begin()))->otherEntityId) {
+		if (!srcData.empty() > 0 && !targetData.empty() > 0) {
+			if (srcData.front()->otherEntityId == targetData.front()->otherEntityId) {
 				return true;
 			}
 		}
@@ -84,8 +84,8 @@ namespace GW2_SCT {
 
 	PARAMETER_FUNCTION(parameterFunctionEntityName) {
 		if (data.size() > 1) {
-			std::string ret = std::string(data[0]->entityName);
-			for (std::shared_ptr<MessageData> temp : data) {
+			std::string ret = std::string(data.front()->entityName);
+			for (auto temp : data) {
 				if (strcmp(temp->entityName, ret.c_str()) != 0) {
 					ret = std::string(langString(GW2_SCT::LanguageCategory::Message, GW2_SCT::LanguageKey::Multiple_Sources));
 					break;
@@ -93,37 +93,37 @@ namespace GW2_SCT {
 			}
 			return ret;
 		}
-		if (data.size() == 1 && data[0]->entityName != nullptr) {
-			return std::string(data[0]->entityName);
+		if (data.size() == 1 && data.front()->entityName != nullptr) {
+			return std::string(data.front()->entityName);
 		}
 		return std::string("");
 	};
 
 	PARAMETER_FUNCTION(parameterFunctionOtherEntityName) {
-		if (data.size() >= 1 && data[0]->otherEntityName != nullptr) {
-			return std::string(data[0]->otherEntityName);
+		if (!data.empty() && data.front()->otherEntityName != nullptr) {
+			return std::string(data.front()->otherEntityName);
 		}
 		return std::string("");
 	};
 
 	PARAMETER_FUNCTION(parameterFunctionSkillName) {
-		if (data.begin() != data.end() && data[0]->skillName != nullptr) {
-			return std::string(data[0]->skillName);
+		if (!data.empty() && data.front()->skillName != nullptr) {
+			return std::string(data.front()->skillName);
 		}
 		return std::string("");
 	};
 
 	PARAMETER_FUNCTION(parameterFunctionSkillIcon) {
-		if (Options::get()->skillIconsEnabled && data.begin() != data.end()) {
-			return std::string("[icon=" + std::to_string(data[0]->skillId) + "][/icon]");
+		if (Options::get()->skillIconsEnabled && !data.empty()) {
+			return std::string("[icon=" + std::to_string(data.front()->skillId) + "][/icon]");
 		}
 		return std::string("");
 	};
 
 	PARAMETER_FUNCTION(parameterFunctionEntityProfessionName) {
-		if (data.begin() != data.end() && data[0]->skillName != nullptr) {
+		if (!data.empty() && data.front()->skillName != nullptr) {
 			std::string professionName;
-			switch (data[0]->entityProf)
+			switch (data.front()->entityProf)
 			{
 			case PROFESSION_GUARDIAN:
 				professionName = std::string(GW2_SCT::Language::get(GW2_SCT::LanguageCategory::Option_UI, GW2_SCT::LanguageKey::Profession_Colors_Guardian));
@@ -163,8 +163,7 @@ namespace GW2_SCT {
 
 	PARAMETER_FUNCTION(parameterFunctionEntityProfessionColor) {
 		std::string professionColor;
-		switch (data[0]->entityProf)
-		{
+		switch (data.front()->entityProf) {
 		case PROFESSION_GUARDIAN:
 			professionColor = GW2_SCT::Options::get()->professionColorGuardian;
 			break;
@@ -354,8 +353,10 @@ GW2_SCT::MessageData::MessageData(int32_t value, int32_t buffValue, uint32_t ove
 }
 #endif // _DEBUG
 
-GW2_SCT::MessageHandler::MessageHandler(std::vector<std::function<bool(std::vector<std::shared_ptr<MessageData>>, std::vector<std::shared_ptr<MessageData>>)>> tryToCombineWithFunctions, std::map<char, std::function<std::string(std::vector<std::shared_ptr<MessageData>>)>> parameterToStringFunctions)
-	: tryToCombineWithFunctions(tryToCombineWithFunctions), parameterToStringFunctions(parameterToStringFunctions) {}
+GW2_SCT::MessageHandler::MessageHandler(
+	std::vector<std::function<bool(std::vector<MessageData*>, std::vector<MessageData*>)>> tryToCombineWithFunctions,
+	std::map<char, std::function<std::string(std::vector<MessageData*>)>> parameterToStringFunctions
+) : tryToCombineWithFunctions(tryToCombineWithFunctions), parameterToStringFunctions(parameterToStringFunctions) {}
 
 GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, cbtevent * ev, ag * src, ag * dst, char * skillname)
 	: category(category), type(type) {
@@ -363,14 +364,14 @@ GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, 
 	{
 	case GW2_SCT::MessageCategory::PLAYER_OUT:
 	case GW2_SCT::MessageCategory::PET_OUT:
-		messageDatas.push_back(std::make_shared<MessageData>(ev, dst, src, skillname));
+		messageDatas.push_back(new MessageData(ev, dst, src, skillname));
 		break;
 	case GW2_SCT::MessageCategory::PLAYER_IN:
 	case GW2_SCT::MessageCategory::PET_IN:
-		messageDatas.push_back(std::make_shared<MessageData>(ev, src, dst, skillname));
+		messageDatas.push_back(new MessageData(ev, src, dst, skillname));
 		break;
 	default:
-		OutputDebugString("GW2_SCT: Received message for unknown category.");
+		LOG("GW2_SCT: Received message for unknown category.");
 		break;
 	}
 }
@@ -381,21 +382,32 @@ GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, 
 	{
 	case GW2_SCT::MessageCategory::PLAYER_OUT:
 	case GW2_SCT::MessageCategory::PET_OUT:
-		messageDatas.push_back(std::make_shared<MessageData>(ev, dst, src, skillname));
+		messageDatas.push_back(new MessageData(ev, dst, src, skillname));
 		break;
 	case GW2_SCT::MessageCategory::PLAYER_IN:
 	case GW2_SCT::MessageCategory::PET_IN:
-		messageDatas.push_back(std::make_shared<MessageData>(ev, src, dst, skillname));
+		messageDatas.push_back(new MessageData(ev, src, dst, skillname));
 		break;
 	default:
-		OutputDebugString("GW2_SCT: Received message for unknown category.");
+		LOG("GW2_SCT: Received message for unknown category.");
 		break;
 	}
 }
 
 GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, std::shared_ptr<MessageData> data)
 	: category(category), type(type) {
-	messageDatas.push_back(data);
+	size_t sizeOfMessageData = sizeof(MessageData);
+	MessageData* newData = (MessageData*) malloc(sizeOfMessageData);
+	if (newData != nullptr) {
+		memcpy(newData, data.get(), sizeOfMessageData);
+		messageDatas.push_back(newData);
+	}
+}
+
+GW2_SCT::EventMessage::~EventMessage() {
+	for (MessageData* it : messageDatas) {
+		delete it;
+	}
 }
 
 std::string GW2_SCT::EventMessage::getStringForOptions(std::shared_ptr<message_receiver_options_struct> opt) {
@@ -415,7 +427,7 @@ std::string GW2_SCT::EventMessage::getStringForOptions(std::shared_ptr<message_r
 					if (cat != messageHandlers.end()) {
 						std::map<MessageType, MessageHandler>::iterator typ = cat->second.find(type);
 						if (typ != cat->second.end()) {
-							std::map<char, std::function<std::string(std::vector<std::shared_ptr<MessageData>>)>>::iterator parFunction = typ->second.parameterToStringFunctions.find(*it);
+							auto parFunction = typ->second.parameterToStringFunctions.find(*it);
 							if (parFunction != typ->second.parameterToStringFunctions.end()) {
 								stm << parFunction->second(messageDatas);
 							}
@@ -439,8 +451,7 @@ std::string GW2_SCT::EventMessage::getStringForOptions(std::shared_ptr<message_r
 	}
 }
 
-std::shared_ptr<GW2_SCT::MessageData> GW2_SCT::EventMessage::getCopyOfFirstData()
-{
+std::shared_ptr<GW2_SCT::MessageData> GW2_SCT::EventMessage::getCopyOfFirstData() {
 	if (messageDatas.size() > 0) {
 		return std::make_shared<MessageData>(*messageDatas.front());
 	}
@@ -470,16 +481,15 @@ bool GW2_SCT::EventMessage::tryToCombineWith(std::shared_ptr<EventMessage> m) {
 		if (cat != messageHandlers.end()) {
 			std::map<MessageType, MessageHandler>::iterator typ = cat->second.find(type);
 			if (typ != cat->second.end()) {
-				for (std::vector<std::function<bool(std::vector<std::shared_ptr<MessageData>>, std::vector<std::shared_ptr<MessageData>>)>>::iterator it = typ->second.tryToCombineWithFunctions.begin();
-					it != typ->second.tryToCombineWithFunctions.end();
-					++it) {
+				for (auto it = typ->second.tryToCombineWithFunctions.begin(); it != typ->second.tryToCombineWithFunctions.end(); ++it) {
 					if (!(*it)(messageDatas, m->messageDatas)) {
 						return false;
 					}
 				}
-				for (std::vector<std::shared_ptr<MessageData>>::iterator it = m->messageDatas.begin(); it != m->messageDatas.end(); it++) {
-					messageDatas.push_back(*it);
+				for (MessageData* it : m->messageDatas) {
+					messageDatas.push_back(it);
 				}
+				m->messageDatas.clear();
 				return true;
 			}
 		}

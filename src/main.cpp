@@ -95,8 +95,6 @@ arcdps_exports* mod_init() {
 	debug_console_hnd = GetStdHandle(STD_OUTPUT_HANDLE);
 #endif
 	arcdps_exports* ret = sct->Init(arcvers, mod_wnd, mod_combat_area, mod_imgui, mod_options, mod_combat_local);
-	LOG("Running arcvers: ", arcvers);
-	LOG("Running sct version: ", SCT_VERSION_STRING, " / ", __DATE__, " / ", __TIME__);
 	return ret;
 }
 
