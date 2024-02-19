@@ -448,6 +448,9 @@ void GW2_SCT::Options::load() {
 	} else {
 		setDefault();
 	}
+	if (!backupFileName.empty()) {
+		save();
+	}
 }
 
 void GW2_SCT::Options::loadProfile(std::string characterName) {
