@@ -38,6 +38,8 @@ Feel free to contact me on [Reddit](https://www.reddit.com/user/Artenuvielle/) i
 
 ## Version History
 
+* 2.0
+	* fixed crash issues with messages trying to render after being deleted already
 * 2.0-RC5
 	* moved texture creation into imgui callback to resolve issues with crashing
 	* creating font atlases in advance to improve loading time
