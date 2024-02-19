@@ -28,9 +28,9 @@ static void         Decode85(const unsigned char* src, unsigned char* dst)
 std::unordered_map<const stbtt_fontinfo*, std::unordered_map<float, std::unordered_map<int, GW2_SCT::Glyph*>>> GW2_SCT::Glyph::_knownGlyphs = {};
 
 GW2_SCT::Glyph* GW2_SCT::Glyph::GetGlyph(const stbtt_fontinfo* font, float scale, int codepoint, int ascent) {
-    auto& fontatScale = _knownGlyphs[font][scale];
-    auto it = fontatScale.find(codepoint);
-    if (it != fontatScale.end()) {
+    auto& fontAtScale = _knownGlyphs[font][scale];
+    auto it = fontAtScale.find(codepoint);
+    if (it != fontAtScale.end()) {
         return it->second;
     } else {
         return _knownGlyphs[font][scale][codepoint] = new Glyph(font, scale, codepoint, ascent);
@@ -428,7 +428,7 @@ void GW2_SCT::FontManager::init() {
 	fontMap.insert(std::pair<int, std::pair<std::string, FontType*>>(0, std::pair<std::string, FontType*>("Default", defaultFont)));
 	if (getFilesInDirectory(fontsDirectory, fontFiles)) {
 		int numFonts = 1;
-		for (std::vector<std::string>::iterator it = fontFiles.begin(); it != fontFiles.end(); ++it) {
+		for (auto it = fontFiles.begin(); it != fontFiles.end(); ++it) {
 			std::string fontFilePath = fontsDirectory + *it;
 			LOG("loading: ", fontFilePath);
 			FontType* fontType = nullptr;

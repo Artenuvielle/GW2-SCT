@@ -249,7 +249,7 @@ void GW2_SCT::SkillIconManager::loadThreadCycle() {
 			}
 
 			std::list<std::pair<uint32_t, std::shared_ptr<std::vector<BYTE>>>> binaryLoadedIcons;
-			for (std::list<std::tuple<uint32_t, std::string, std::string>>::iterator it = loadableIconURLs.begin(); it != loadableIconURLs.end() && keepLoadThreadRunning; ++it) {
+			for (auto it = loadableIconURLs.begin(); it != loadableIconURLs.end() && keepLoadThreadRunning; ++it) {
 				uint32_t curSkillId = std::get<0>(*it);
 				try {
 					std::string desc = std::get<1>(*it) + "/" + std::get<2>(*it);
@@ -358,7 +358,7 @@ inline HexCharStruct hex(unsigned char _c) {
 void logImageData(std::shared_ptr<std::vector<BYTE>> data) {
 	std::stringstream str;
 	int i = 0;
-	for (std::vector<BYTE>::iterator it = data->begin(); it != data->end(); it++) {
+	for (auto it = data->begin(); it != data->end(); it++) {
 		str << " 0x" << std::setfill('0') << std::setw(2) << hex(*it);
 		i++;
 		if (i >= 16) {

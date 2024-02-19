@@ -13,7 +13,6 @@ namespace GW2_SCT {
 	public:
 		ScrollArea(std::shared_ptr<scroll_area_options_struct> options);
 		void receiveMessage(std::shared_ptr<EventMessage> m);
-		void transferMessagesTo(std::shared_ptr<ScrollArea> otherScrollArea);
 		void paint();
 	private:
 		struct MessagePrerender {
@@ -28,19 +27,21 @@ namespace GW2_SCT {
 			float interpretedTextWidth;
 			bool prerenderNeeded = true;
 			long templateObserverId, colorObserverId, fontObserverId, fontSizeObserverId;
+		public:
 			MessagePrerender(std::shared_ptr<EventMessage> message, std::shared_ptr<message_receiver_options_struct> options);
+			MessagePrerender(const MessagePrerender& copy);
 			~MessagePrerender();
 			void update();
 			void prerenderText();
 		};
 
 		std::mutex messageQueueMutex;
-		std::deque<std::shared_ptr<MessagePrerender>> messageQueue = std::deque<std::shared_ptr<MessagePrerender>>();
+		std::deque<MessagePrerender> messageQueue = std::deque<MessagePrerender>();
 
 		void paintOutline();
-		bool paintMessage(std::shared_ptr<MessagePrerender> m, __int64 time);
+		bool paintMessage(MessagePrerender& m, __int64 time);
 
-		std::list<std::pair<std::shared_ptr<MessagePrerender>, std::chrono::time_point<std::chrono::system_clock>>> paintedMessages;
+		std::list<std::pair<MessagePrerender, std::chrono::time_point<std::chrono::system_clock>>> paintedMessages;
 
 		std::shared_ptr<scroll_area_options_struct> options;
 	};

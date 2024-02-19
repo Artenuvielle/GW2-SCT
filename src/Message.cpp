@@ -3,8 +3,8 @@
 #include <sstream>
 #include "Language.h"
 
-#define COMBINE_FUNCTION(NAME) std::function<bool(std::vector<MessageData*>, std::vector<MessageData*>)> NAME = [](std::vector<MessageData*> srcData, std::vector<MessageData*> targetData)
-#define PARAMETER_FUNCTION(NAME) std::function<std::string(std::vector<MessageData*>)> NAME = [](std::vector<MessageData*> data)
+#define COMBINE_FUNCTION(NAME) std::function<bool(std::vector<const MessageData*>&, std::vector<const MessageData*>&)> NAME = [](std::vector<const MessageData*>& srcData, std::vector<const MessageData*>& targetData)
+#define PARAMETER_FUNCTION(NAME) std::function<std::string(std::vector<const MessageData*>&)> NAME = [](std::vector<const MessageData*>& data)
 
 namespace GW2_SCT {
 	COMBINE_FUNCTION(combineFunctionSkillId) {
@@ -36,7 +36,7 @@ namespace GW2_SCT {
 
 	PARAMETER_FUNCTION(parameterFunctionValue) {
 		int32_t value = 0;
-		for (auto i : data) {
+		for (auto& i : data) {
 			value += i->value;
 		}
 		return std::to_string(value);
@@ -44,7 +44,7 @@ namespace GW2_SCT {
 
 	PARAMETER_FUNCTION(parameterFunctionBuffValue) {
 		int32_t value = 0;
-		for (auto i : data) {
+		for (auto& i : data) {
 			value += i->buffValue;
 		}
 		return std::to_string(value);
@@ -52,7 +52,7 @@ namespace GW2_SCT {
 
 	PARAMETER_FUNCTION(parameterFunctionNegativeValue) {
 		int32_t value = 0;
-		for (auto i : data) {
+		for (auto& i : data) {
 			value -= i->value;
 		}
 		return std::to_string(value);
@@ -60,7 +60,7 @@ namespace GW2_SCT {
 
 	PARAMETER_FUNCTION(parameterFunctionOverstackValue) {
 		int32_t value = 0;
-		for (auto i : data) {
+		for (auto& i : data) {
 			value += i->overstack_value;
 		}
 		return std::to_string(value);
@@ -68,7 +68,7 @@ namespace GW2_SCT {
 
 	PARAMETER_FUNCTION(parameterFunctionNegativeBuffValue) {
 		int32_t value = 0;
-		for (auto i : data) {
+		for (auto& i : data) {
 			value -= i->buffValue;
 		}
 		return std::to_string(value);
@@ -76,7 +76,7 @@ namespace GW2_SCT {
 
 	PARAMETER_FUNCTION(parameterFunctionOverstackBuffValue) {
 		int32_t value = 0;
-		for (auto i : data) {
+		for (auto& i : data) {
 			value += i->overstack_value;
 		}
 		return std::to_string(value);
@@ -85,7 +85,7 @@ namespace GW2_SCT {
 	PARAMETER_FUNCTION(parameterFunctionEntityName) {
 		if (data.size() > 1) {
 			std::string ret = std::string(data.front()->entityName);
-			for (auto temp : data) {
+			for (auto& temp : data) {
 				if (strcmp(temp->entityName, ret.c_str()) != 0) {
 					ret = std::string(langString(GW2_SCT::LanguageCategory::Message, GW2_SCT::LanguageKey::Multiple_Sources));
 					break;
@@ -163,37 +163,39 @@ namespace GW2_SCT {
 
 	PARAMETER_FUNCTION(parameterFunctionEntityProfessionColor) {
 		std::string professionColor;
-		switch (data.front()->entityProf) {
-		case PROFESSION_GUARDIAN:
-			professionColor = GW2_SCT::Options::get()->professionColorGuardian;
-			break;
-		case PROFESSION_WARRIOR:
-			professionColor = GW2_SCT::Options::get()->professionColorWarrior;
-			break;
-		case PROFESSION_ENGINEER:
-			professionColor = GW2_SCT::Options::get()->professionColorEngineer;
-			break;
-		case PROFESSION_RANGER:
-			professionColor = GW2_SCT::Options::get()->professionColorRanger;
-			break;
-		case PROFESSION_THIEF:
-			professionColor = GW2_SCT::Options::get()->professionColorThief;
-			break;
-		case PROFESSION_ELEMENTALIST:
-			professionColor = GW2_SCT::Options::get()->professionColorElementalist;
-			break;
-		case PROFESSION_MESMER:
-			professionColor = GW2_SCT::Options::get()->professionColorMesmer;
-			break;
-		case PROFESSION_NECROMANCER:
-			professionColor = GW2_SCT::Options::get()->professionColorNecromancer;
-			break;
-		case PROFESSION_REVENANT:
-			professionColor = GW2_SCT::Options::get()->professionColorRevenant;
-			break;
-		default:
-			professionColor = GW2_SCT::Options::get()->professionColorDefault;
-			break;
+		if (!data.empty()) {
+			switch (data.front()->entityProf) {
+			case PROFESSION_GUARDIAN:
+				professionColor = GW2_SCT::Options::get()->professionColorGuardian;
+				break;
+			case PROFESSION_WARRIOR:
+				professionColor = GW2_SCT::Options::get()->professionColorWarrior;
+				break;
+			case PROFESSION_ENGINEER:
+				professionColor = GW2_SCT::Options::get()->professionColorEngineer;
+				break;
+			case PROFESSION_RANGER:
+				professionColor = GW2_SCT::Options::get()->professionColorRanger;
+				break;
+			case PROFESSION_THIEF:
+				professionColor = GW2_SCT::Options::get()->professionColorThief;
+				break;
+			case PROFESSION_ELEMENTALIST:
+				professionColor = GW2_SCT::Options::get()->professionColorElementalist;
+				break;
+			case PROFESSION_MESMER:
+				professionColor = GW2_SCT::Options::get()->professionColorMesmer;
+				break;
+			case PROFESSION_NECROMANCER:
+				professionColor = GW2_SCT::Options::get()->professionColorNecromancer;
+				break;
+			case PROFESSION_REVENANT:
+				professionColor = GW2_SCT::Options::get()->professionColorRevenant;
+				break;
+			default:
+				professionColor = GW2_SCT::Options::get()->professionColorDefault;
+				break;
+			}
 		}
 		return professionColor;
 	};
@@ -353,13 +355,28 @@ GW2_SCT::MessageData::MessageData(int32_t value, int32_t buffValue, uint32_t ove
 }
 #endif // _DEBUG
 
+GW2_SCT::MessageData::MessageData(const MessageData& toCopy) {
+	skillName = toCopy.skillName;
+	entityName = toCopy.entityName;
+	otherEntityName = toCopy.otherEntityName;
+	value = toCopy.value;
+	overstack_value = toCopy.overstack_value;
+	buffValue = toCopy.buffValue;
+	skillId = toCopy.skillId;
+	entityId = toCopy.entityId;
+	entityProf = toCopy.entityProf;
+	otherEntityId = toCopy.otherEntityId;
+	otherEntityProf = toCopy.otherEntityProf;
+	hasToBeFiltered = toCopy.hasToBeFiltered;
+}
+
 GW2_SCT::MessageHandler::MessageHandler(
-	std::vector<std::function<bool(std::vector<MessageData*>, std::vector<MessageData*>)>> tryToCombineWithFunctions,
-	std::map<char, std::function<std::string(std::vector<MessageData*>)>> parameterToStringFunctions
+	std::vector<std::function<bool(std::vector<const MessageData*>&, std::vector<const MessageData*>&)>> tryToCombineWithFunctions,
+	std::map<char, std::function<std::string(std::vector<const MessageData*>&)>> parameterToStringFunctions
 ) : tryToCombineWithFunctions(tryToCombineWithFunctions), parameterToStringFunctions(parameterToStringFunctions) {}
 
 GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, cbtevent * ev, ag * src, ag * dst, char * skillname)
-	: category(category), type(type) {
+	: category(category), type(type), timepoint(std::chrono::system_clock::now()) {
 	switch (category)
 	{
 	case GW2_SCT::MessageCategory::PLAYER_OUT:
@@ -377,7 +394,7 @@ GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, 
 }
 
 GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, cbtevent1 * ev, ag * src, ag * dst, char * skillname)
-	: category(category), type(type) {
+	: category(category), type(type), timepoint(std::chrono::system_clock::now()) {
 	switch (category)
 	{
 	case GW2_SCT::MessageCategory::PLAYER_OUT:
@@ -395,27 +412,27 @@ GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, 
 }
 
 GW2_SCT::EventMessage::EventMessage(MessageCategory category, MessageType type, std::shared_ptr<MessageData> data)
-	: category(category), type(type) {
-	size_t sizeOfMessageData = sizeof(MessageData);
-	MessageData* newData = (MessageData*) malloc(sizeOfMessageData);
-	if (newData != nullptr) {
-		memcpy(newData, data.get(), sizeOfMessageData);
-		messageDatas.push_back(newData);
-	}
+	: category(category), type(type), timepoint(std::chrono::system_clock::now()) {
+	messageDatas.push_back(new MessageData(*data));
 }
 
 GW2_SCT::EventMessage::~EventMessage() {
-	for (MessageData* it : messageDatas) {
+	for (auto it : messageDatas) {
 		delete it;
 	}
 }
 
 std::string GW2_SCT::EventMessage::getStringForOptions(std::shared_ptr<message_receiver_options_struct> opt) {
 	if (opt != nullptr) {
+		if (messageDatas.empty()) {
+			LOG("WARN: empty message");
+			return "";
+		}
+		std::erase_if(messageDatas, [](const MessageData* data) { return data == nullptr; });
 		std::string outputTemplate = opt->outputTemplate;
 		std::stringstream stm;
 		stm << "[col=" << opt->color << "]";
-		for (std::string::iterator it = outputTemplate.begin(); it != outputTemplate.end(); ++it) {
+		for (auto it = outputTemplate.begin(); it != outputTemplate.end(); ++it) {
 			switch (*it) {
 			case '%':
 				it++;
@@ -423,9 +440,9 @@ std::string GW2_SCT::EventMessage::getStringForOptions(std::shared_ptr<message_r
 					stm << *it;
 				}
 				else {
-					std::map<MessageCategory, std::map<MessageType, MessageHandler>>::iterator cat = messageHandlers.find(category);
+					auto cat = messageHandlers.find(category);
 					if (cat != messageHandlers.end()) {
-						std::map<MessageType, MessageHandler>::iterator typ = cat->second.find(type);
+						auto typ = cat->second.find(type);
 						if (typ != cat->second.end()) {
 							auto parFunction = typ->second.parameterToStringFunctions.find(*it);
 							if (parFunction != typ->second.parameterToStringFunctions.end()) {
@@ -452,7 +469,7 @@ std::string GW2_SCT::EventMessage::getStringForOptions(std::shared_ptr<message_r
 }
 
 std::shared_ptr<GW2_SCT::MessageData> GW2_SCT::EventMessage::getCopyOfFirstData() {
-	if (messageDatas.size() > 0) {
+	if (!messageDatas.empty()) {
 		return std::make_shared<MessageData>(*messageDatas.front());
 	}
 	return std::shared_ptr<MessageData>();
@@ -467,7 +484,7 @@ GW2_SCT::MessageType GW2_SCT::EventMessage::getType() {
 }
 
 bool GW2_SCT::EventMessage::hasToBeFiltered() {
-	for (auto m : messageDatas) {
+	for (auto& m : messageDatas) {
 		if (!m->hasToBeFiltered) {
 			return false;
 		}
@@ -477,22 +494,25 @@ bool GW2_SCT::EventMessage::hasToBeFiltered() {
 
 bool GW2_SCT::EventMessage::tryToCombineWith(std::shared_ptr<EventMessage> m) {
 	if (m->category == category && m->type == type) {
-		std::map<MessageCategory, std::map<MessageType, MessageHandler>>::iterator cat = messageHandlers.find(category);
+		auto cat = messageHandlers.find(category);
 		if (cat != messageHandlers.end()) {
-			std::map<MessageType, MessageHandler>::iterator typ = cat->second.find(type);
+			auto typ = cat->second.find(type);
 			if (typ != cat->second.end()) {
 				for (auto it = typ->second.tryToCombineWithFunctions.begin(); it != typ->second.tryToCombineWithFunctions.end(); ++it) {
 					if (!(*it)(messageDatas, m->messageDatas)) {
 						return false;
 					}
 				}
-				for (MessageData* it : m->messageDatas) {
-					messageDatas.push_back(it);
+				for (auto it : m->messageDatas) {
+					messageDatas.push_back(new MessageData(*it));
 				}
-				m->messageDatas.clear();
 				return true;
 			}
 		}
 	}
 	return false;
+}
+
+std::chrono::system_clock::time_point GW2_SCT::EventMessage::getTimepoint() {
+	return timepoint;
 }

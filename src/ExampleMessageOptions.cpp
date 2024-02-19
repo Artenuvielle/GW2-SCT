@@ -140,7 +140,7 @@ void GW2_SCT::ExampleMessageOptions::receiveMessage(std::shared_ptr<EventMessage
 	if (state == State::RECORDING) {
 		auto messageDataCopy = m->getCopyOfFirstData();
 		if (!messageDataCopy->hasToBeFiltered) {
-			messagesToEmmit.insert(std::pair<std::chrono::system_clock::duration, MessageInformation>(std::chrono::system_clock::now() - recordingStart, { m->getCategory(), m->getType(), messageDataCopy }));
+			messagesToEmmit.insert(std::pair<std::chrono::system_clock::duration, MessageInformation>(m->getTimepoint() - recordingStart, { m->getCategory(), m->getType(), messageDataCopy }));
 		}
 	}
 }
@@ -153,7 +153,7 @@ void GW2_SCT::ExampleMessageOptions::emitMessages() {
 			if (state != State::EMITTING) return;
 		}
 		if (main != nullptr) {
-			main->emitMessageToScrollAreas(std::make_shared<EventMessage>(it->second.category, it->second.type, it->second.data));
+			main->sendMessageToEmission(std::make_shared<EventMessage>(it->second.category, it->second.type, it->second.data));
 		}
 	}
 	state = State::READY_TO_RECORD;

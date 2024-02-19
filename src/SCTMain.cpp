@@ -270,25 +270,24 @@ uintptr_t GW2_SCT::SCTMain::CombatEventLocal(cbtevent * ev, ag * src, ag * dst, 
 					if (src->self == 1 && (!Options::get()->outgoingOnlyToTarget || dst->id == targetAgentId)) {
 						if (!Options::get()->selfMessageOnlyIncoming || dst->self != 1) {
 							std::shared_ptr<GW2_SCT::EventMessage> m = std::make_shared<GW2_SCT::EventMessage>(MessageCategory::PLAYER_OUT, type, ev1, src, dst, skillname);
-							emitMessageToScrollAreas(m);
+							sendMessageToEmission(m);
 						}
 					}
 					else if (ev1->src_master_instid == selfInstID && (!Options::get()->outgoingOnlyToTarget || dst->id == targetAgentId)) {
 						std::shared_ptr<GW2_SCT::EventMessage> m = std::make_shared<GW2_SCT::EventMessage>(MessageCategory::PET_OUT, type, ev1, src, dst, skillname);
-						emitMessageToScrollAreas(m);
+						sendMessageToEmission(m);
 					}
 					if (dst->self == 1) {
 						std::shared_ptr<GW2_SCT::EventMessage> m = std::make_shared<GW2_SCT::EventMessage>(MessageCategory::PLAYER_IN, type, ev1, src, dst, skillname);
-						emitMessageToScrollAreas(m);
+						sendMessageToEmission(m);
 					}
 					else if (ev1->dst_master_instid == selfInstID) {
 						std::shared_ptr<GW2_SCT::EventMessage> m = std::make_shared<GW2_SCT::EventMessage>(MessageCategory::PET_IN, type, ev1, src, dst, skillname);
-						emitMessageToScrollAreas(m);
+						sendMessageToEmission(m);
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			/* default names */
 			if (!src->name || !strlen(src->name)) src->name = _strdup(langStringG(LanguageKey::Unknown_Skill_Source));
 			if (!dst->name || !strlen(dst->name)) dst->name = _strdup(langStringG(LanguageKey::Unknown_Skill_Target));
@@ -355,16 +354,16 @@ uintptr_t GW2_SCT::SCTMain::CombatEventLocal(cbtevent * ev, ag * src, ag * dst, 
 					if (src->self) {
 						if (!Options::get()->selfMessageOnlyIncoming || !dst->self) {
 							std::shared_ptr<GW2_SCT::EventMessage> m = std::make_shared<GW2_SCT::EventMessage>(MessageCategory::PLAYER_OUT, type, ev, src, dst, skillname);
-							emitMessageToScrollAreas(m);
+							sendMessageToEmission(m);
 						}
 					}
 					else if (ev->src_master_instid == selfInstID) {
 						std::shared_ptr<GW2_SCT::EventMessage> m = std::make_shared<GW2_SCT::EventMessage>(MessageCategory::PET_OUT, type, ev, src, dst, skillname);
-						emitMessageToScrollAreas(m);
+						sendMessageToEmission(m);
 					}
 					if (dst->self) {
 						std::shared_ptr<GW2_SCT::EventMessage> m = std::make_shared<GW2_SCT::EventMessage>(MessageCategory::PLAYER_IN, type, ev, src, dst, skillname);
-						emitMessageToScrollAreas(m);
+						sendMessageToEmission(m);
 					}
 					/*else if (ev->dst_master_instid == selfInstID) {
 						std::shared_ptr<GW2_SCT::Message> m = std::make_shared<GW2_SCT::Message>(MessageCategory::PET_IN, type, ev, src, dst, skillname);
@@ -424,15 +423,20 @@ uintptr_t GW2_SCT::SCTMain::UIOptions() {
 	return 0;
 }
 
-uint32_t GW2_SCT::SCTMain::remapSkillID(uint32_t originalID) {
-	if (skillRemaps.count(originalID) == 0) return originalID;
-	else return skillRemaps[originalID];
-}
-
-void GW2_SCT::SCTMain::emitMessageToScrollAreas(std::shared_ptr<EventMessage> m) {
+void GW2_SCT::SCTMain::sendMessageToEmission(std::shared_ptr<EventMessage> m) {
 	if (m->hasToBeFiltered()) return;
 	for (auto scrollArea : scrollAreas) {
 		scrollArea->receiveMessage(m);
 	}
 	ExampleMessageOptions::receiveMessage(m);
+}
+
+inline void clear(std::queue<std::shared_ptr<GW2_SCT::EventMessage>>& q) {
+	std::queue<std::shared_ptr<GW2_SCT::EventMessage>> empty;
+	std::swap(q, empty);
+}
+
+uint32_t GW2_SCT::SCTMain::remapSkillID(uint32_t originalID) {
+	if (skillRemaps.count(originalID) == 0) return originalID;
+	else return skillRemaps[originalID];
 }

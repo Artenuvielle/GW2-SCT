@@ -1,6 +1,9 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 #include "Common.h"
 #include "Options.h"
 #include "ScrollArea.h"
@@ -34,7 +37,7 @@ namespace GW2_SCT {
 		uintptr_t CombatEventLocal(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision);
 		uintptr_t UIUpdate();
 		uintptr_t UIOptions();
-		void emitMessageToScrollAreas(std::shared_ptr<EventMessage> m);
+		void sendMessageToEmission(std::shared_ptr<EventMessage> m);
 	private:
 		uint32_t remapSkillID(uint32_t originalID);
 		arcdps_exports arc_exports;

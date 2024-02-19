@@ -22,7 +22,7 @@ ImVec2 CalcTextSizeWithFontSize(const char* text, ImFont* font, float font_size)
 ImVec2 getTextSize(const char* t, GW2_SCT::FontType* font, float fontSize, bool use_bbc) {
 	std::string text = std::string(t);
 	std::string currentText = "";
-	std::string::iterator it = text.begin();
+	auto it = text.begin();
 
 	if (use_bbc) {
 		while (it != text.end()) {
@@ -59,7 +59,7 @@ bool GW2_SCT::TemplateInterpreter::validate(std::string t, std::map<char, std::s
 	std::vector<std::string> currentCommands;
 	std::string tempText;
 
-	for (std::string::iterator it = t.begin(); it != t.end(); it++) {
+	for (auto it = t.begin(); it != t.end(); it++) {
 		switch (*it)
 		{
 		case ']':
@@ -157,7 +157,7 @@ std::vector<GW2_SCT::TemplateInterpreter::InterpretedText> GW2_SCT::TemplateInte
 	std::string currentText = "";
 	ImVec2 currentOffset = ImVec2(0.f, 0.f);
 
-	for (std::string::iterator it = t.begin(); it != t.end(); it++) {
+	for (auto it = t.begin(); it != t.end(); it++) {
 		switch (*it)
 		{
 		case ']':

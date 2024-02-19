@@ -20,20 +20,22 @@ namespace GW2_SCT {
 		uint64_t otherEntityId = 0;
 		uint32_t otherEntityProf = 0;
 		bool hasToBeFiltered = false;
+	public:
 		MessageData(cbtevent* ev, ag* entity, ag * otherEntity, const char* skillname);
 		MessageData(cbtevent1* ev, ag* entity, ag * otherEntity, const char* skillname);
 #ifdef _DEBUG
 		MessageData(int32_t value, int32_t buffValue, uint32_t overstack_value, uint32_t skillId, ag* entity, ag* otherEntity, const char* skillname);
 #endif // _DEBUG
 		MessageData() {};
+		MessageData(const MessageData& toCopy);
 	};
 
 	struct MessageHandler {
-		std::vector<std::function<bool(std::vector<MessageData*>, std::vector<MessageData*>)>> tryToCombineWithFunctions;
-		std::map<char, std::function<std::string(std::vector<MessageData*>)>> parameterToStringFunctions;
+		std::vector<std::function<bool(std::vector<const MessageData*>&, std::vector<const MessageData*>&)>> tryToCombineWithFunctions;
+		std::map<char, std::function<std::string(std::vector<const MessageData*>&)>> parameterToStringFunctions;
 		MessageHandler(
-			std::vector<std::function<bool(std::vector<MessageData*>, std::vector<MessageData*>)>> tryToCombineWithFunctions,
-			std::map<char, std::function<std::string(std::vector<MessageData*>)>> parameterToStringFunctions
+			std::vector<std::function<bool(std::vector<const MessageData*>&, std::vector<const MessageData*>&)>> tryToCombineWithFunctions,
+			std::map<char, std::function<std::string(std::vector<const MessageData*>&)>> parameterToStringFunctions
 		);
 	};
 
@@ -49,10 +51,12 @@ namespace GW2_SCT {
 		MessageType getType();
 		bool hasToBeFiltered();
 		bool tryToCombineWith(std::shared_ptr<EventMessage> m);
+		std::chrono::system_clock::time_point getTimepoint();
 	private:
+		std::chrono::system_clock::time_point timepoint;
 		MessageCategory category;
 		MessageType type;
-		std::vector<MessageData*> messageDatas;
+		std::vector<const MessageData*> messageDatas;
 		static std::map<MessageCategory, std::map<MessageType, MessageHandler>> messageHandlers;
 	};
 }

@@ -275,7 +275,7 @@ void GW2_SCT::Options::save() {
 
 void GW2_SCT::Options::load() {
 	fontSelectionString = "";
-	for (std::map<int, std::pair<std::string, FontType*>>::iterator it = fontMap.begin(); it != fontMap.end(); ++it) {
+	for (auto it = fontMap.begin(); it != fontMap.end(); ++it) {
 		fontSelectionString += '\0' + it->second.first;
 	}
 	fontSelectionString += '\0';
