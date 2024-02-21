@@ -233,10 +233,12 @@ void GW2_SCT::SkillIconManager::loadThreadCycle() {
 					if (possibleSkillInformationList.is_array()) {
 						std::vector<nlohmann::json> skillInformationList = possibleSkillInformationList;
 						for (auto& skillInformation : skillInformationList) {
-							std::string renderingApiURL = skillInformation["icon"];
-							std::string signature = std::regex_replace(renderingApiURL, renderAPIURLMatcher, "$1", std::regex_constants::format_no_copy);
-							std::string fileId = std::regex_replace(renderingApiURL, renderAPIURLMatcher, "$2", std::regex_constants::format_no_copy);
-							loadableIconURLs.push_back(std::make_tuple(skillInformation["id"], signature, fileId));
+							if (!skillInformation["icon"].is_null()) {
+								std::string renderingApiURL = skillInformation["icon"];
+								std::string signature = std::regex_replace(renderingApiURL, renderAPIURLMatcher, "$1", std::regex_constants::format_no_copy);
+								std::string fileId = std::regex_replace(renderingApiURL, renderAPIURLMatcher, "$2", std::regex_constants::format_no_copy);
+								loadableIconURLs.push_back(std::make_tuple(skillInformation["id"], signature, fileId));
+							}
 						}
 					}
 				}
