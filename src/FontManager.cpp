@@ -103,6 +103,7 @@ float GW2_SCT::Glyph::getRealAdvanceAndKerning(int nextCodepoint) {
 }
 
 std::vector<GW2_SCT::FontType::GlyphAtlas*> GW2_SCT::FontType::_allocatedAtlases;
+std::mutex GW2_SCT::FontType::_allocatedAtlassesMutex;
 
 GW2_SCT::FontType::FontType(unsigned char* data, size_t size) {
     _cachedScales = {};
@@ -116,18 +117,15 @@ GW2_SCT::FontType::FontType(unsigned char* data, size_t size) {
 
 void GW2_SCT::FontType::ensureAtlasCreation() {
     size_t atlasId = 0;
+    std::lock_guard lock(_allocatedAtlassesMutex);
     while (atlasId < _allocatedAtlases.size()) {
         _allocatedAtlases[atlasId]->texture->ensureCreation();
         atlasId++;
     }
-    if (_allocatedAtlases.size() == 0 || _allocatedAtlases.back()->linesWithSpaces.size() > 0) {
-        LOG("Creating atlas with id ", atlasId, " in advance")
-        GlyphAtlas* atlas = new GlyphAtlas();
-        _allocatedAtlases.push_back(atlas);
-    }
 }
 
 void GW2_SCT::FontType::cleanup() {
+    std::lock_guard lock(_allocatedAtlassesMutex);
     for (auto atlas : _allocatedAtlases) {
         delete atlas;
     }
@@ -189,6 +187,12 @@ std::vector<int> getCodepointsWithoutDuplicates(std::string str) {
 void GW2_SCT::FontType::bakeGlyphsAtSize(std::string text, float fontSize) {
     float scale = getCachedScale(fontSize);
     std::vector<int> codepointsWithoutDuplicates = getCodepointsWithoutDuplicates(text);
+    std::lock_guard lock(_allocatedAtlassesMutex);
+    if (_allocatedAtlases.size() == 0) {
+        LOG("Creating atlas with id 0 in advance");
+        GlyphAtlas* atlas = new GlyphAtlas();
+        _allocatedAtlases.push_back(atlas);
+    }
     for (const auto& codePoint : codepointsWithoutDuplicates) {
         if (_glyphPositionsAtSizes[scale].find(codePoint) == _glyphPositionsAtSizes[scale].end()) {
             Glyph* glyph = Glyph::GetGlyph(&_info, scale, codePoint, _ascent);
@@ -210,7 +214,7 @@ void GW2_SCT::FontType::bakeGlyphsAtSize(std::string text, float fontSize) {
                     if (_allocatedAtlases[atlasId]->linesWithSpaces.size() == 0) {
                         nextYAfterLastLine = 0;
                     } else {
-                        auto lastLine = _allocatedAtlases[atlasId]->linesWithSpaces.back();
+                        auto& lastLine = _allocatedAtlases[atlasId]->linesWithSpaces.back();
                         nextYAfterLastLine = lastLine.nextGlyphPosition.y + lastLine.lineHeight;
                     }
                     if (nextYAfterLastLine + fontSize < FONT_TEXTURE_SIZE) {
@@ -225,6 +229,10 @@ void GW2_SCT::FontType::bakeGlyphsAtSize(std::string text, float fontSize) {
             if (atlasId == _allocatedAtlases.size()) {
                 GlyphAtlas* atlas = new GlyphAtlas();
                 atlas->linesWithSpaces.push_back({fontSize, ImVec2(glyph->getWidth(), 0)});
+                _allocatedAtlases.push_back(atlas);
+            } else if (_allocatedAtlases[atlasId]->linesWithSpaces.size() == 0) {
+                LOG("Creating atlas with id ", _allocatedAtlases.size()," in advance");
+                GlyphAtlas* atlas = new GlyphAtlas();
                 _allocatedAtlases.push_back(atlas);
             }
 
@@ -276,6 +284,7 @@ void GW2_SCT::FontType::drawAtSize(std::string text, float fontSize, ImVec2 pos,
     if (definitions.size() == 0) return;
     ImDrawList* dl = ImGui::GetWindowDrawList();
     ImVec2 currentPos(pos.x - definitions.front()->glyph->getLeftSideBearing(), pos.y);
+    std::lock_guard lock(_allocatedAtlassesMutex);
     if (isCachedScaleExactForSize(fontSize)) {
         for (size_t i = 0; i < definitions.size(); i++) {
             GlyphPositionDefinition* def = definitions[i];
@@ -302,6 +311,7 @@ void GW2_SCT::FontType::drawAtSize(std::string text, float fontSize, ImVec2 pos,
 void GW2_SCT::FontType::drawAtlas() {
     ImDrawList* dl = ImGui::GetWindowDrawList();
     ImVec2 pos(0, 0);
+    std::lock_guard lock(_allocatedAtlassesMutex);
     for (int i = 0; i < _allocatedAtlases.size(); i++) {
         ImVec2 size(FONT_TEXTURE_SIZE, FONT_TEXTURE_SIZE);
         ImVec2 end(pos.x + FONT_TEXTURE_SIZE, pos.y + FONT_TEXTURE_SIZE);

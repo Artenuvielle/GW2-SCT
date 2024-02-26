@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <mutex>
 #include <unordered_map>
 #include <imgui.h>
 #include "stb_truetype.h"
@@ -81,6 +82,7 @@ namespace GW2_SCT {
 		std::unordered_map<float, std::unordered_map<int, GlyphPositionDefinition>> _glyphPositionsAtSizes;
 
 		static std::vector<GlyphAtlas*> _allocatedAtlases;
+		static std::mutex _allocatedAtlassesMutex;
 	};
 
 	class FontManager {
